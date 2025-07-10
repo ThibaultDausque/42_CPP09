@@ -49,7 +49,7 @@ void	BitcoinExchange::parseInput(std::string& file)
 
 	if (!input.is_open())
 	{
-		std::cerr << "Error: impossible to open the file." << std::endl;
+		std::cerr << RED << OPEN << std::endl;
 		return ;
 	}
 	idx = 0;
@@ -57,7 +57,7 @@ void	BitcoinExchange::parseInput(std::string& file)
 	{
 		if (idx == 0 && line != "date | value")
 		{
-			std::cerr << "Error: first line of the file should be \"date | value\"." << std::endl;
+			std::cerr << RED << DATEVALUE << std::endl;
 			return ;	
 		}
 		std::cout << line << std::endl;

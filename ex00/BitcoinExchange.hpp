@@ -5,6 +5,7 @@
 # include <map>
 # include <fstream>
 # include <ctime>
+# include "message.hpp"
 
 class BitcoinExchange
 {
