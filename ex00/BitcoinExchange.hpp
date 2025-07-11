@@ -5,6 +5,7 @@
 # include <map>
 # include <fstream>
 # include <ctime>
+# include <cctype>
 # include "message.hpp"
 
 class BitcoinExchange
@@ -23,6 +24,7 @@ class BitcoinExchange
 		~BitcoinExchange();
 		BitcoinExchange&	operator=(const BitcoinExchange& src);
 		void	parseInput(std::string& file);
+		int		inputFileForm(std::string& line);
 		int		dateForm(std::string& date);
 };
 
