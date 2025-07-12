@@ -23,5 +23,6 @@
 # define DATEVALUE "Error: first line of the file should be \"date | value\"."
 # define OPEN "Error: impossible to open the file."
 # define DATE "Error: date format KO"
+# define FORMAT "Error: \"date | value\" format error."
 
 #endif

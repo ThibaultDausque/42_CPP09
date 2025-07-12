@@ -27,69 +27,60 @@ int	BitcoinExchange::dateForm(std::string& date)
 	int		len;
 
 	for (size_t t = 0; date[t] && date[t] != ' '; t++)
+		len = t;
+	if (len != 9 || (date[4] != '-' && date[7] != '-'))
 	{
-		for (size_t u = t + 1; date[u] && date[u] != ' ' && date[u] != '-'; u++)
+		std::cout << RED << DATE << std::endl;
+		return 0;
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (!isdigit(date[i]))
 		{
-			if (date[u] < '0' || date[u] > '9')
-			{
-				return 0;
-			}
-		}
-		if(date[t] == '-' && date[t + 1] == '-')
-		{
+			std::cout << RED << DATE << std::endl;
 			return 0;
 		}
-		len = t;
+	}
+	if (!isdigit(date[5]) && !isdigit(date[6]))
+	{
+		std::cout << RED << DATE << std::endl;
+		return 0;
+	}
+	if (!isdigit(date[8]) && !isdigit(date[9]))
+	{
+		std::cout << RED << DATE << std::endl;
+		return 0;
 	}
 	return len;
 }
 
 int	BitcoinExchange::inputFileForm(std::string& line)
 {
+	int		pos;
+	int		pos_bis;
 	int		count;
-	int		found;
 
-	if (!dateForm(line))
+	pos = dateForm(line);
+	if (!pos)
 	{
-		std::cerr << RED << DATE << std::endl;
+		std::cout << RED << "KO";
 		return 0;
 	}
-	count = 0;
-	for (int i = dateForm(line) + 1; line[i] && line[i] != '|'; i++)
+	if (line[pos + 1] != ' ' || line[pos + 2] != '|' || line[pos + 1] == '\0')
 	{
-		if (line[i] == ' ')
-			count++;
-		if (count > 1 || line[i] == '\0')
-		{
-			std::cout << RED << "KO";
-			return 0;
-		}
-	}
-	found = line.find("|");
-	if (!found)
+		std::cout << RED << FORMAT << std::endl;
 		std::cout << RED << "KO";
-	for (int j = found + 1; line[j] && line[j] == ' '; j++)
-	{
-		if (line[j] == ' ')
-			count++;
-		if (count > 2 || line[j] == '\0')
-		{
-			std::cout << RED << "KO";
-			return 0;
-		}
+		return 0;
 	}
+	pos_bis = pos + 2;
 	count = 0;
-	for (int k = line.size(); std::isdigit(line[k]) && k != 0; k--)
+	if (line[pos_bis] ==  '|')
 	{
-		if (line[k] == '.')
+		while (!isdigit(line[pos_bis]))
 		{
-			count++;
-			continue ;
-		}
-		if (count > 2 || k == 0)
-		{
-			std::cout << RED << "KO";
-			return 0;
+			if (line[pos_bis] == ' ')
+				count++;
+			
 		}
 	}
 	std::cout << GREEN << "OK";
@@ -115,13 +106,18 @@ void	BitcoinExchange::parseInput(std::string& file)
 			std::cerr << RED << DATEVALUE << std::endl;
 			return ;
 		}
-		// if (dateForm(line))
-		// {
-		// 	std::string	date = line.substr(0, dateForm(line) + 1);
-		// 	std::cout << date << std::endl;
-		// }
-		inputFileForm(line);
-		std:: cout << " >> " << line << std::endl;
+		else if (idx == 0)
+			std::cout << line << std::endl;
+		if (idx > 0)
+		{
+			if (line.empty())
+			{
+				std::cout << line << std::endl;
+				continue ;
+			}
+			inputFileForm(line);
+			std:: cout << " >> " << line << std::endl;
+		}
 		idx++;
 	}
 	input.close();

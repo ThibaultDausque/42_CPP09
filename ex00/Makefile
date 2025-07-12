@@ -16,6 +16,7 @@ $(NAME): $(OBJS)
 $(OBJS_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CC) $(FLAGS) -c $< -o $@
+	@clear
 
 clean:
 	@$(RM) $(OBJS_DIR)
@@ -24,5 +25,6 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean $(NAME)
+	@clear
 
 .PHONY: all clean fclean re
