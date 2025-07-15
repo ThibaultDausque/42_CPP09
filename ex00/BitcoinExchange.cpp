@@ -62,6 +62,7 @@ int	BitcoinExchange::inputFileForm(std::string& line)
 	int		pos;
 	int		pos_bis;
 	int		count;
+	std::string	value;
 
 	pos = dateForm(line);
 	if (!pos)
@@ -79,11 +80,37 @@ int	BitcoinExchange::inputFileForm(std::string& line)
 	count = 0;
 	if (line[pos_bis] ==  '|')
 	{
-		while (!isdigit(line[pos_bis]))
+		if (line[++pos_bis] != ' ')
 		{
-			if (line[pos_bis] == ' ')
-				count++;
-			pos_bis++;
+			std::cout << RED << DATEVALUE << std::endl;
+			return 0;
+		}
+		if (isdigit(line[++pos_bis]))
+		{
+			value = line.substr(pos_bis, line.size());
+			for (size_t i = 0; i < value.size(); i++)
+			{
+				if (value[i] == '.')
+				{
+					count++;
+					continue ;
+				}
+				if (value[i] < '0' || value[i] > '9' || count > 1)
+				{
+					std::cout << RED << VALUE << std::endl;
+					return 0;
+				}
+			}
+			if (atof(value.c_str()) < 0 || atof(value.c_str()) > 1000)
+			{
+				std::cout << RED << VALUE << std::endl;
+				return 0;
+			}
+		}
+		else
+		{
+			std::cout << RED << VALUE << std::endl;
+			return 0;
 		}
 	}
 	std::cout << GREEN << "OK";
