@@ -22,7 +22,7 @@ BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& src)
 	return *this;
 }
 
-int	BitcoinExchange::dateForm(std::string& date)
+int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 {
 	int		len;
 	std::string	year;
@@ -54,26 +54,23 @@ int	BitcoinExchange::dateForm(std::string& date)
 		std::cout << RED << MONTH << std::endl;
 		return 0;
 	}
+	data.time = date.substr(0, 9);
 	return len;
 }
 
-int	BitcoinExchange::inputFileForm(std::string& line)
+int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
 {
 	int		pos;
 	int		pos_bis;
 	int		count;
 	std::string	value;
 
-	pos = dateForm(line);
+	pos = dateForm(line, data);
 	if (!pos)
-	{
-		std::cout << RED << "KO";
 		return 0;
-	}
 	if (line[pos + 1] != ' ' || line[pos + 2] != '|' || line[pos + 1] == '\0')
 	{
 		std::cout << RED << FORMAT << std::endl;
-		std::cout << RED << "KO";
 		return 0;
 	}
 	pos_bis = pos + 2;
@@ -106,6 +103,7 @@ int	BitcoinExchange::inputFileForm(std::string& line)
 				std::cout << RED << VALUE << std::endl;
 				return 0;
 			}
+			data.value = atof(value.c_str());
 		}
 		else
 		{
@@ -122,6 +120,7 @@ void	BitcoinExchange::parseInput(std::string& file)
 	std::ifstream	input(file.c_str());
 	std::string		line;
 	int				idx;
+	t_data			data;
 
 	if (!input.is_open())
 	{
@@ -145,8 +144,10 @@ void	BitcoinExchange::parseInput(std::string& file)
 				std::cout << line << std::endl;
 				continue ;
 			}
-			inputFileForm(line);
-			std:: cout << " >> " << line << std::endl;
+			if (inputFileForm(line, data))
+				std::cout << " >> " << data.time << " | " << data.value << std::endl;
+			else
+				std::cout << " >> " << line << std::endl;
 		}
 		idx++;
 	}

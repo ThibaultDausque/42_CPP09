@@ -12,11 +12,11 @@
 class BitcoinExchange
 {
 	private:
-		typedef struct t_data
+		typedef struct s_data
 		{
 			float	value;
 			std::string	time;
-		}	s_data;
+		}	t_data;
 		std::map<std::string, float>	_btc;
 	
 	public:
@@ -25,8 +25,8 @@ class BitcoinExchange
 		~BitcoinExchange();
 		BitcoinExchange&	operator=(const BitcoinExchange& src);
 		void	parseInput(std::string& file);
-		int		inputFileForm(std::string& line);
-		int		dateForm(std::string& date);
+		int		inputFileForm(std::string& line, t_data& data);
+		int		dateForm(std::string& date, t_data& data);
 };
 
 #endif
