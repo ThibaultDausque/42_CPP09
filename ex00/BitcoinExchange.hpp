@@ -2,6 +2,7 @@
 # define BITCOINEXCHANGE_HPP
 
 # include <iostream>
+# include <stdlib.h>
 # include <map>
 # include <fstream>
 # include <ctime>

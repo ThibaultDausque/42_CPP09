@@ -25,6 +25,9 @@ BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& src)
 int	BitcoinExchange::dateForm(std::string& date)
 {
 	int		len;
+	std::string	year;
+	std::string	month;
+	std::string	day;
 
 	for (size_t t = 0; date[t] && date[t] != ' '; t++)
 		len = t;
@@ -33,22 +36,22 @@ int	BitcoinExchange::dateForm(std::string& date)
 		std::cout << RED << DATE << std::endl;
 		return 0;
 	}
-	for (int i = 0; i < 3; i++)
+	year = date.substr(0, 4);
+	if (atoi(year.c_str()) < 2009 || atoi(year.c_str()) > 2022)
 	{
-		if (!isdigit(date[i]))
-		{
-			std::cout << RED << DATE << std::endl;
-			return 0;
-		}
-	}
-	if (!isdigit(date[5]) && !isdigit(date[6]))
-	{
-		std::cout << RED << DATE << std::endl;
+		std::cout << RED << YEAR << std::endl;
 		return 0;
 	}
-	if (!isdigit(date[8]) && !isdigit(date[9]))
+	month = date.substr(5, 6);
+	if (atoi(month.c_str()) < 1 || atoi(month.c_str()) > 12)
 	{
-		std::cout << RED << DATE << std::endl;
+		std::cout << RED << MONTH << std::endl;
+		return 0;
+	}
+	day = date.substr(8, 9);
+	if (atoi(day.c_str()) < 1 || atoi(day.c_str()) > 31)
+	{
+		std::cout << RED << MONTH << std::endl;
 		return 0;
 	}
 	return len;
@@ -80,7 +83,7 @@ int	BitcoinExchange::inputFileForm(std::string& line)
 		{
 			if (line[pos_bis] == ' ')
 				count++;
-			
+			pos_bis++;
 		}
 	}
 	std::cout << GREEN << "OK";

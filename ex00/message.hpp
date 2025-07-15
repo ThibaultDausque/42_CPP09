@@ -24,5 +24,8 @@
 # define OPEN "Error: impossible to open the file."
 # define DATE "Error: date format KO"
 # define FORMAT "Error: \"date | value\" format error."
+# define YEAR "Error: year KO."
+# define MONTH "Error: month KO."
+# define DAY "Error: day KO."
 
 #endif
