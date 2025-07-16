@@ -70,7 +70,7 @@ int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
 		return 0;
 	if (line[pos + 1] != ' ' || line[pos + 2] != '|' || line[pos + 1] == '\0')
 	{
-		std::cout << RED << FORMAT << std::endl;
+		std::cerr << RED << FORMAT << std::endl;
 		return 0;
 	}
 	pos_bis = pos + 2;
@@ -79,7 +79,7 @@ int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
 	{
 		if (line[++pos_bis] != ' ')
 		{
-			std::cout << RED << DATEVALUE << std::endl;
+			std::cerr << RED << DATEVALUE << std::endl;
 			return 0;
 		}
 		if (isdigit(line[++pos_bis]))
@@ -107,11 +107,10 @@ int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
 		}
 		else
 		{
-			std::cout << RED << VALUE << std::endl;
+			std::cerr << RED << VALUE << std::endl;
 			return 0;
 		}
 	}
-	std::cout << GREEN << "OK";
 	return 1;
 }
 
@@ -147,7 +146,9 @@ void	BitcoinExchange::parseInput(std::string& file)
 			if (inputFileForm(line, data))
 			{
 				_btc[data.time] = data.value;
-				std::cout << " >> " << data.time << " | " << _btc[data.time] << std::endl;
+				if (_csv[data.time])
+					std::cout << GREEN << data.time << " => " << _btc[data.time] << " = "
+					<< _csv[data.time] * _btc[data.time] << std::endl;
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;
@@ -158,9 +159,9 @@ void	BitcoinExchange::parseInput(std::string& file)
 	return ;
 }
 
-void	BitcoinExchange::parseData(std::string &file)
+void	BitcoinExchange::parseData()
 {
-	std::ifstream	data(file.c_str());
+	std::ifstream	data("data.csv");
 	std::string		line;
 	std::string		date;
 	std::string		value;
@@ -180,9 +181,8 @@ void	BitcoinExchange::parseData(std::string &file)
 			continue ;
 		}
 		date = line.substr(0, 10);
-		value = line.substr(12, line.size());
+		value = line.substr(11, line.size());
 		_csv[date] = atof(value.c_str());
-		std::cout << date << " >> " << _csv[date] << std::endl;
 		idx++;
 	}
 	return ;
