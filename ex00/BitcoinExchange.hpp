@@ -18,6 +18,7 @@ class BitcoinExchange
 			std::string	time;
 		}	t_data;
 		std::map<std::string, float>	_btc;
+		std::map<std::string, float>	_csv;
 	
 	public:
 		BitcoinExchange();
@@ -27,6 +28,7 @@ class BitcoinExchange
 		void	parseInput(std::string& file);
 		int		inputFileForm(std::string& line, t_data& data);
 		int		dateForm(std::string& date, t_data& data);
+		void	parseData(std::string& file);
 };
 
 #endif

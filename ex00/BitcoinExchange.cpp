@@ -54,7 +54,7 @@ int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 		std::cout << RED << MONTH << std::endl;
 		return 0;
 	}
-	data.time = date.substr(0, 9);
+	data.time = date.substr(0, 10);
 	return len;
 }
 
@@ -145,13 +145,46 @@ void	BitcoinExchange::parseInput(std::string& file)
 				continue ;
 			}
 			if (inputFileForm(line, data))
-				std::cout << " >> " << data.time << " | " << data.value << std::endl;
+			{
+				_btc[data.time] = data.value;
+				std::cout << " >> " << data.time << " | " << _btc[data.time] << std::endl;
+			}
 			else
-				std::cout << " >> " << line << std::endl;
+				std::cout << "KO >> " << line << std::endl;
 		}
 		idx++;
 	}
 	input.close();
+	return ;
+}
+
+void	BitcoinExchange::parseData(std::string &file)
+{
+	std::ifstream	data(file.c_str());
+	std::string		line;
+	std::string		date;
+	std::string		value;
+	int				idx;
+
+	if (!data.is_open())
+	{
+		std::cerr << RED << OPEN << std::endl;
+		return ;
+	}
+	idx = 0;
+	while (std::getline(data, line))
+	{
+		if (idx == 0)
+		{
+			idx++;
+			continue ;
+		}
+		date = line.substr(0, 10);
+		value = line.substr(12, line.size());
+		_csv[date] = atof(value.c_str());
+		std::cout << date << " >> " << _csv[date] << std::endl;
+		idx++;
+	}
 	return ;
 }
 
