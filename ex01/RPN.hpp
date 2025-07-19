@@ -6,17 +6,17 @@
 
 class	RPN
 {
-	public:
-		std::vector<int>	_nb;
-		std::vector<char>	_sign;
-
 	private:
-		RPN::RPN();
-		RPN::RPN(const RPN& cpy);
-		~RPN::RPN();
+		std::vector<int>	_nb;
+
+	public:
+		RPN();
+		RPN(const RPN& cpy);
+		~RPN();
 		RPN&	operator=(const RPN& src);
 		bool	parseCmd(std::string& av);
-}
+		void	calcool(std::string& av);
+};
 
 #endif
 
