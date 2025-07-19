@@ -44,13 +44,48 @@ bool	RPN::parseCmd(std::string&	av)
 	return true;
 }
 
+int	RPN::countOps(std::string& av)
+{
+	int		signs;
+	int		nb;
+
+	signs = 0;
+	nb = 0;
+	for (size_t i = 0; i < av.size(); i++)
+	{
+		if (av[i] >= '0' && av[i] <= '9')
+			nb++;
+		if (av[i] == '-' || av[i] == '+'
+			|| av[i] == '*' || av[i] == '/')
+			signs++;
+	}
+	if (nb != signs + 1)
+		return 0;
+	return 1;
+}
+
 void	RPN::calcool(std::string& av)
 {
+	if ((av[0] < '0' || av[0] > '9'))
+	{
+		std::cerr << "Error: first element must be a number" << std::endl;
+		return ;
+	}
+	if (av[2] == '-' || av[2] == '+' || av[2] == '*' || av[2] == '/')
+	{
+		std::cerr << "Error: bad RPN format." << std::endl;
+		return ;
+	}
+	if (!countOps(av))
+	{
+		std::cerr << "Error: RPN rule not respected. (n = o + 1)" << std::endl;
+		return ;
+	}
 	if (parseCmd(av))
 	{
 		for (size_t i = 0; i < av.size(); i++)
 		{
-			if (av[i] > '0' && av[i] < '9')
+			if (av[i] >= '0' && av[i] <= '9')
 				_nb.push_back(atoi(&av[i]));
 			if (_nb.size() >= 2)
 			{	
@@ -71,12 +106,12 @@ void	RPN::calcool(std::string& av)
 				}
 				else if (av[i] == '/')
 				{
-					_nb[_nb.size() - 2] = _nb[_nb.size() - 1];
+					_nb[_nb.size() - 2] /= _nb[_nb.size() - 1];
 					_nb.pop_back();
 				}
 			}
 		}
+		std::cout << "Result: " << _nb.at(0) << std::endl;
 	}
-	std::cout << "Result: " << _nb.at(0) << std::endl;
 	return ;
 }
