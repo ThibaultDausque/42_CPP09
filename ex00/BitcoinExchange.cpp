@@ -1,4 +1,5 @@
 #include "BitcoinExchange.hpp"
+#include "message.hpp"
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -28,6 +29,7 @@ int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 	std::string	year;
 	std::string	month;
 	std::string	day;
+	(void) data;
 
 	for (size_t t = 0; date[t] && date[t] != ' '; t++)
 		len = t;
@@ -36,8 +38,8 @@ int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 		std::cout << RED << DATE << std::endl;
 		return 0;
 	}
-	year = date.substr(0, 4);
-	if (atoi(year.c_str()) < 2009 || atoi(year.c_str()) > 2022)
+	year = date.substr(0, 3);
+	if (atoi(year.c_str()) < 1 || atoi(year.c_str()) > 9999)
 	{
 		std::cout << RED << YEAR << std::endl;
 		return 0;
@@ -58,7 +60,7 @@ int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 	return len;
 }
 
-int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
+float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 {
 	int		pos;
 	int		pos_bis;
@@ -111,7 +113,7 @@ int	BitcoinExchange::inputFileForm(std::string& line, t_data& data)
 			return 0;
 		}
 	}
-	return 1;
+	return data.value;
 }
 
 void	BitcoinExchange::parseInput(std::string& file)
@@ -120,6 +122,7 @@ void	BitcoinExchange::parseInput(std::string& file)
 	std::string		line;
 	int				idx;
 	t_data			data;
+	float			value;
 
 	if (!input.is_open())
 	{
@@ -140,15 +143,17 @@ void	BitcoinExchange::parseInput(std::string& file)
 		{
 			if (line.empty())
 			{
-				std::cout << line << std::endl;
+				std::cerr << RED << "Error: empty line." << std::endl;
+				std::cout << ">> " << line << std::endl;
 				continue ;
 			}
 			if (inputFileForm(line, data))
 			{
-				_btc[data.time] = data.value;
-				if (_csv[data.time])
-					std::cout << GREEN << data.time << " => " << _btc[data.time] << " = "
-					<< _csv[data.time] * _btc[data.time] << std::endl;
+				_btc[data.time] = inputFileForm(line, data);
+				value = _csv[data.time] * _btc[data.time];
+				std::cout << "csv value: " << _csv[data.time] << std::endl;
+				std::cout << WHITE << data.time << " => " << _btc[data.time] << " = "
+					<< value << std::endl;
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;

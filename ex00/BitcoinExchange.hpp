@@ -26,7 +26,7 @@ class BitcoinExchange
 		~BitcoinExchange();
 		BitcoinExchange&	operator=(const BitcoinExchange& src);
 		void	parseInput(std::string& file);
-		int		inputFileForm(std::string& line, t_data& data);
+		float	inputFileForm(std::string& line, t_data &data);
 		int		dateForm(std::string& date, t_data& data);
 		void	parseData();
 		bool	dateIsValid(std::string& date);
