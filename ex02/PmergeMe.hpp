@@ -8,16 +8,16 @@
 class PmergeMe
 {
 	private:
-		std::deque	_pair;
-		std::list	_list;
+		std::deque<int>	_pair;
+		std::list<int>	_list;
 
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe& cpy);
 		~PmergeMe();
 		PmergeMe&	operator=(const PmergeMe& src);
-		void	checkList(std::string& list);
-
+		int		checkList(char *list);
+		void	displayList(void);
 };
 
 #endif

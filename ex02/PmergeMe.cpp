@@ -26,22 +26,25 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& src)
 	return *this;
 }
 
-void	PmergeMe::checkList(std::string& list)
+int	PmergeMe::checkList(char *list)
 {
-	int		count;
-
-	count = 0;
-	for (size_t i = 0; isdigit(list[i]); i++)
+	std::string	av(list);
+	for (size_t i = 0; i < av.size(); i++)
 	{
-		if (list[i] < '0' || list[i] > '9')
+		if (av[i] < '0' || av[i] > '9')
 		{
 			std::cout << "Error: list of number KO." << std::endl;
-			if (list[i] == ' ')
-				continue ;
-			return ;
+			return 0;
 		}
 	}
-	std::cout << "OK" << std::endl;
+	_list.push_back(atoi(list);
+	return 1;
 }
 
-
+void	PmergeMe::displayList(void)
+{
+	for (int i = _list.begin(); it != _list.end(); i++)
+	  std::cout << i << " ";
+	std::cout << std::endl;
+	return ;
+}
