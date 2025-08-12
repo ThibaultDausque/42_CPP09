@@ -4,6 +4,7 @@
 # include <iostream>
 # include <list>
 # include <deque>
+# include <cstdlib>
 
 class PmergeMe
 {
@@ -18,6 +19,9 @@ class PmergeMe
 		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
 		void	displayList(void);
+		void	mergeSort(int* tab);
+		void	merge(int *right, int *left, int *tab);
+		void	fillList(int nb);
 };
 
 #endif
