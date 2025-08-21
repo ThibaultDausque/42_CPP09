@@ -29,7 +29,7 @@ int	main(int ac, char **av)
 	for (int l = 0; l < size; l++)
 		std::cout << tab[l] << ", ";
 	std::cout << std::endl;
-	algo.mergeSort(tab, size);
+	algo.mergeSort(tab);
 	std::cout << "After: ";
 	for (int k = 0; k < size; k++)
 		std::cout << tab[k] << ", ";

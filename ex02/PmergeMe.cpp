@@ -54,60 +54,74 @@ void	PmergeMe::displayList(void)
 	return ;
 }
 
-void	PmergeMe::mergeSort(int* tab, int size)
+int	tabSize(int *tab)
+{
+	int		i;
+
+	i = 0;
+	while (tab[i])
+		i++;
+	return i;
+}
+
+void	PmergeMe::mergeSort(int *tab)
 {
 	int		size;
-	int		middle;
-	int		i;
+	int		l_size;
+	int		r_size;
 	int		j;
+	int		k;
 
-	middle = size / 2;
-	int		left[middle];
-	int		right[middle];
+	size = tabSize(tab);
+	l_size = size / 2;
+	r_size = size - l_size;
 
 	if (size <= 1)
 		return ;
+	int	right[r_size];
+	int	left[l_size];
+
 	j = 0;
-	for (i = 0; i < size; i++)
+	k = 0;
+	for (int i = 0; i < size; i++)
 	{
-		if (i < middle)
-			right[i] = tab[i];
-	  	else
+		if (i < l_size)
 		{
 			left[j] = tab[i];
 			j++;
+		}
+		else
+		{
+			right[k] = tab[i];
+			k++;
 		}
 	}
 	mergeSort(right);
 	mergeSort(left);
 	merge(right, left, tab);
+
 }
 
-void	PmergeMe::merge(int *right, int *left, int *array)
+void	PmergeMe::merge(int *right, int *left, int *tab)
 {
-	int		leftSize;
-	int		rightSize;
 	int		i;
 	int		j;
 	int		k;
 
-	leftSize = left.size() / 2;
-	rightSize = array.size() - leftSize();
-
 	i = 0;
 	j = 0;
 	k = 0;
-	while (i < leftSize && j < rightSize)
+	while (right[i] && left[j])
 	{
-		if (right[j] < left[i])
+		if (left[j] < right[i])
 		{
-			array[k] = right[j];
+			tab[k] = left[j];
 			k++;
 			j++;
 		}
 		else
 		{
-			array[k] = left[i];
+			tab[k] = right[i];
 			k++;
 			i++;
 		}
