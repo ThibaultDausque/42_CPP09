@@ -54,38 +54,28 @@ void	PmergeMe::displayList(void)
 	return ;
 }
 
-int	tabSize(int *tab)
+void	PmergeMe::mergeSort(std::vector<int> &tab)
 {
+	size_t	size;
+	size_t	mid;
 	int		i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return i;
-}
-
-void	PmergeMe::mergeSort(int *tab)
-{
-	int		size;
-	int		l_size;
-	int		r_size;
 	int		j;
 	int		k;
 
-	size = tabSize(tab);
-	l_size = size / 2;
-	r_size = size - l_size;
-
+	size = tab.size();
 	if (size <= 1)
 		return ;
-	int	right[r_size];
-	int	left[l_size];
+	mid = size / 2;
 
+	std::vector<int>	right(tab.begin() + mid,tab.begin());
+	std::vector<int>	left(tab.begin(), tab.begin() + mid);
+
+	i = 0;
 	j = 0;
 	k = 0;
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < tab.size(); i++)
 	{
-		if (i < l_size)
+		if (i < mid)
 		{
 			left[j] = tab[i];
 			j++;
@@ -99,31 +89,42 @@ void	PmergeMe::mergeSort(int *tab)
 	mergeSort(right);
 	mergeSort(left);
 	merge(right, left, tab);
-
 }
 
-void	PmergeMe::merge(int *right, int *left, int *tab)
+void	PmergeMe::merge(std::vector<int> &right, std::vector<int> &left, std::vector<int> &tab)
 {
-	int		i;
-	int		j;
-	int		k;
+	size_t	i;
+	size_t	j;
+	size_t	k;
 
 	i = 0;
 	j = 0;
 	k = 0;
-	while (right[i] && left[j])
+	while (i < left.size() && j < right.size())
 	{
-		if (left[j] < right[i])
+		if (left[i] < right[j])
 		{
-			tab[k] = left[j];
+			tab[k] = left[i];
+			i++;
 			k++;
-			j++;
 		}
 		else
 		{
-			tab[k] = right[i];
-			k++;
+			tab[k] = right[j];
 			i++;
+			j++;
 		}
+	}
+	while (i < right.size())
+	{
+		tab[k] = right[i];
+		i++;
+		k++;
+	}
+	while (j < left.size())
+	{
+		tab[k] = left[j];
+		j++;
+		k++;
 	}
 }

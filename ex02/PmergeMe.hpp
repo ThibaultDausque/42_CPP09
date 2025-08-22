@@ -5,6 +5,7 @@
 # include <list>
 # include <deque>
 # include <cstdlib>
+# include <vector>
 
 class PmergeMe
 {
@@ -19,8 +20,8 @@ class PmergeMe
 		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
 		void	displayList(void);
-		void	mergeSort(int* tab);
-		void	merge(int *right, int *left, int *tab);
+		void	mergeSort(std::vector<int> &tab);
+		void	merge(std::vector<int> &right, std::vector<int> &left, std::vector<int> &tab);
 		void	fillList(int nb);
 };
 

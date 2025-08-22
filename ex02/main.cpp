@@ -19,20 +19,19 @@ int	main(int ac, char **av)
 		algo.checkList(av[i]);
 		i++;
 	}
-	int	tab[i];
-	int	size = sizeof(tab) / sizeof(tab[0]);
+	std::vector<int> tab;
 	i = 1;
 	j = 0;
 	while (av[i])
-		tab[j++] = atoi(av[i++]);
+		tab.push_back(atoi(av[i++]));
 	std::cout << "Before: ";
-	for (int l = 0; l < size; l++)
-		std::cout << tab[l] << ", ";
+	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
+		std::cout << *it << ", ";
 	std::cout << std::endl;
 	algo.mergeSort(tab);
 	std::cout << "After: ";
-	for (int k = 0; k < size; k++)
-		std::cout << tab[k] << ", ";
+	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
+		std::cout << *it << ", ";
 	std::cout << std::endl;
 	return 0;
 }
