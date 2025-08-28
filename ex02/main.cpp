@@ -1,5 +1,5 @@
-# include <iostream>
-# include "PmergeMe.hpp"
+#include <iostream>
+#include "PmergeMe.hpp"
 #include <cstdlib>
 
 int	main(int ac, char **av)
@@ -26,12 +26,17 @@ int	main(int ac, char **av)
 		tab.push_back(atoi(av[i++]));
 	std::cout << "Before: ";
 	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
-		std::cout << *it << ", ";
+		std::cout << *it << " ";
 	std::cout << std::endl;
 	algo.mergeSort(tab);
+	std::cout << std::endl;
 	std::cout << "After: ";
 	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
-		std::cout << *it << ", ";
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
+	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
 	std::cout << std::endl;
 	return 0;
 }

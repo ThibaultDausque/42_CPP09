@@ -16,16 +16,6 @@ PmergeMe::~PmergeMe()
 
 }
 
-PmergeMe&	PmergeMe::operator=(const PmergeMe& src)
-{
-	if (this != &src)
-	{
-		this->_pair = src._pair;
-		this->_list = src._list;
-	}
-	return *this;
-}
-
 void	PmergeMe::fillList(int nb)
 {
 	_list.push_back(nb);	
@@ -59,32 +49,22 @@ void	PmergeMe::mergeSort(std::vector<int> &tab)
 	size_t	size;
 	size_t	mid;
 	int		i;
-	int		j;
-	int		k;
 
 	size = tab.size();
 	if (size <= 1)
 		return ;
 	mid = size / 2;
 
-	std::vector<int>	right(tab.begin() + mid,tab.begin());
-	std::vector<int>	left(tab.begin(), tab.begin() + mid);
+	std::vector<int>	right;
+	std::vector<int>	left;
 
 	i = 0;
-	j = 0;
-	k = 0;
-	for (size_t i = 0; i < tab.size(); i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		if (i < mid)
-		{
-			left[j] = tab[i];
-			j++;
-		}
+			left.push_back(tab[i]);
 		else
-		{
-			right[k] = tab[i];
-			k++;
-		}
+			right.push_back(tab[i]);
 	}
 	mergeSort(right);
 	mergeSort(left);
@@ -96,11 +76,13 @@ void	PmergeMe::merge(std::vector<int> &right, std::vector<int> &left, std::vecto
 	size_t	i;
 	size_t	j;
 	size_t	k;
+	size_t	l_size = left.size();
+	size_t	r_size = right.size();
 
 	i = 0;
 	j = 0;
 	k = 0;
-	while (i < left.size() && j < right.size())
+	while (i < l_size && j < r_size)
 	{
 		if (left[i] < right[j])
 		{
@@ -111,20 +93,20 @@ void	PmergeMe::merge(std::vector<int> &right, std::vector<int> &left, std::vecto
 		else
 		{
 			tab[k] = right[j];
-			i++;
+			k++;
 			j++;
 		}
 	}
-	while (i < right.size())
+	while (i < l_size)
 	{
-		tab[k] = right[i];
+		tab[k] = left[i];
+		k++;
 		i++;
-		k++;
 	}
-	while (j < left.size())
+	while (j < r_size)
 	{
-		tab[k] = left[j];
-		j++;
+		tab[k] = right[j];
 		k++;
+		j++;
 	}
 }

@@ -7,12 +7,11 @@
 # include <cstdlib>
 # include <vector>
 
+std::deque<int>	_pair;
+std::list<int>	_list;
+
 class PmergeMe
 {
-	private:
-		std::deque<int>	_pair;
-		std::list<int>	_list;
-
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe& cpy);
@@ -24,5 +23,7 @@ class PmergeMe
 		void	merge(std::vector<int> &right, std::vector<int> &left, std::vector<int> &tab);
 		void	fillList(int nb);
 };
+
+# include "PmergeMe.tpp"
 
 #endif
