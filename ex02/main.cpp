@@ -6,7 +6,6 @@ int	main(int ac, char **av)
 {
 	PmergeMe	algo;
 	int			i;
-	int			j;
 
 	if (ac == 1)
 	{
@@ -19,19 +18,18 @@ int	main(int ac, char **av)
 		algo.checkList(av[i]);
 		i++;
 	}
-	std::vector<int> tab;
+	std::list<int> tab;
 	i = 1;
-	j = 0;
 	while (av[i])
 		tab.push_back(atoi(av[i++]));
 	std::cout << "Before: ";
-	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
+	for (std::list<int>::iterator it = tab.begin(); it != tab.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
-	algo.mergeSort(tab);
+	mergeSort(tab);
 	std::cout << std::endl;
 	std::cout << "After: ";
-	for (std::vector<int>::iterator it = tab.begin(); it != tab.end(); ++it)
+	for (std::list<int>::iterator it = tab.begin(); it != tab.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;
