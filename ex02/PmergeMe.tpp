@@ -31,13 +31,13 @@ void	merge(T &right, T &left, T &tab)
 	{
 		if (*l_it < *r_it)
 		{
-			tab.insert(l_it, k);
+			tab.insert(k, l_it);
 			i++;
 			k++;
 		}
 		else
 		{
-			tab.insert(r_it, k);
+			tab.insert(k, r_it);
 			j++;
 			k++;
 		}
@@ -46,14 +46,14 @@ void	merge(T &right, T &left, T &tab)
 	}
 	while (i < l_size)
 	{
-		tab.insert(l_it, k);
+		tab.insert(k, l_it);
 		i++;
 		k++;
 		l_it++;
 	}
 	while (j < r_size)
 	{
-		tab.insert(r_it, k);
+		tab.insert(k, r_it);
 		j++;
 		k++;
 		r_it++;
@@ -84,6 +84,7 @@ void    mergeSort(T &seq)
 	}
 	mergeSort(right);
 	mergeSort(left);
+
 	merge(right, left, seq);
 }
 
