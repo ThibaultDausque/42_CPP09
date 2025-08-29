@@ -17,6 +17,7 @@ class PmergeMe
 		PmergeMe();
 		PmergeMe(const PmergeMe& cpy);
 		~PmergeMe();
+		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
 		int		execFord(char **av);
 		// void	displayList(void);

@@ -16,6 +16,16 @@ PmergeMe::~PmergeMe()
 
 }
 
+PmergeMe&	PmergeMe::operator=(const PmergeMe& src)
+{
+	if (this != &src)
+	{
+		_toto = src._toto;
+		_tutu = src._tutu;
+	}
+	return *this;
+}
+
 int	PmergeMe::checkList(char *list)
 {
 	std::string	av(list);
@@ -27,6 +37,35 @@ int	PmergeMe::checkList(char *list)
 			return 0;
 		}
 	}
-	_list.push_back(atoi(list));
+	_tutu.push_back(atoi(list));
 	return 1;
+}
+
+int	PmergeMe::execFord(char **av)
+{
+	int		i;
+
+	i = 1;
+	while (av[i])
+	{
+		if (!checkList(av[i]))
+			return 0;
+		i++;
+	}
+
+	std::cout << "Before: ";
+	for (std::list<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	mergeSort(_tutu);
+	std::cout << std::endl;
+	std::cout << "After: ";
+	for (std::list<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
+	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
+	std::cout << std::endl;
+	return 0;
 }
