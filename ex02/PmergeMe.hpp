@@ -20,10 +20,6 @@ class PmergeMe
 		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
 		int		execFord(char **av);
-		// void	displayList(void);
-		// void	mergeSort(std::vector<int> &tab);
-		// void	merge(std::vector<int> &right, std::vector<int> &left, std::vector<int> &tab);
-		// void	fillList(int nb);
 };
 
 #include "PmergeMe.tpp"
