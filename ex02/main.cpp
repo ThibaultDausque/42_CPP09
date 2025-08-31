@@ -4,12 +4,12 @@
 
 int	main(int ac, char **av)
 {
-	PmergeMe	algo;
+	PmergeMe	pm;
 
 	if (ac == 1)
 	{
 		std::cerr << "Error: you need to put some numbers." << std::endl;
 		return 0;
 	}
-	algo.execFord(av);
+	pm.execFord(av);
 }

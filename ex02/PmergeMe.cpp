@@ -53,13 +53,13 @@ int	PmergeMe::execFord(char **av)
 	}
 
 	std::cout << "Before: ";
-	for (std::list<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
+	for (std::vector<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
-	mergeSort(_tutu);
+	sortPairs(_tutu);
 	std::cout << std::endl;
 	std::cout << "After: ";
-	for (std::list<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
+	for (std::vector<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;

@@ -14,7 +14,74 @@ void	fillList(int nb, T &seq)
 }
 
 template <typename T>
-void	merge(T &right, T &left, T &tab)
+void	sortPairs(T &tab)
+{
+	T	pair;
+	int		flag;
+	size_t	i;
+	int		tmp;
+	size_t	len;
+
+	len = tab.size();
+	i = 0;
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+	{
+		if (i % 2 == 0)
+			flag = 1;
+		if (i == len - 1 && len % 2 != 0)
+			break ;
+		if (flag == 1)
+		{	
+			if (*it > *(it + 1))
+			{
+				tmp = *it;
+				*it = *(it + 1);
+				*(it + 1) = tmp;
+				flag = 0;
+			}
+		}
+		i++;
+	}
+	maxElem(tab);
+}
+
+template <typename T>
+void	maxElem(T &tab)
+{
+	T	max;
+	size_t	i;
+	int		flag;
+	size_t	len;
+
+	len = tab.size();
+	i = 0;
+	flag = 0;
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+	{
+		if (i % 2 != 0)
+			flag = 1;
+		if (i == len - 1 && len % 2 != 0)
+		{
+			max.push_back(*it);
+			break ;
+		}
+		if (flag == 1)
+		{
+			max.push_back(*it);
+			flag = 0;
+		}
+		i++;
+	}
+	// mergeSort(tab);
+	std::cout << std::endl;
+	std::cout << "max: ";
+	for (typename T::iterator it = max.begin(); it != max.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+}
+
+template <typename T>
+void	Pmerge(T &right, T &left, T &tab)
 {
 	size_t	i;
 	size_t	j;
@@ -29,7 +96,7 @@ void	merge(T &right, T &left, T &tab)
 	typename T::iterator	r = tab.begin();
 	typename T::iterator	l = tab.begin();
 	typename T::iterator	r_it = right.begin();
-	typename T::iterator	l_it = left.begin();
+	typename T::iterator	l_it = left.begin();	mergeSort(tab);
 	while (i < l_size && j < r_size)
 	{
 		if (*l_it < *r_it)
@@ -66,7 +133,7 @@ void	merge(T &right, T &left, T &tab)
 template <typename T>
 void    mergeSort(T &seq)
 {
-    size_t	size;
+	size_t	size;
 	size_t	mid;
 
 	size = seq.size();
@@ -75,7 +142,8 @@ void    mergeSort(T &seq)
 	mid = size / 2;
 
 	T	right;
-	T	left;
+	T	left;	mergeSort(right);
+	mergeSort(left);
 
 	typename T::iterator it = seq.begin();
 	for (size_t i = 0; i < size; i++, it++)
@@ -85,10 +153,11 @@ void    mergeSort(T &seq)
 		else
 			right.push_back(*it);
 	}
+
 	mergeSort(right);
 	mergeSort(left);
 
-	merge(right, left, seq);
+	// Pmerge(right, left, seq);
 }
 
 

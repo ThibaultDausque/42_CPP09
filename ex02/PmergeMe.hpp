@@ -11,7 +11,7 @@ class PmergeMe
 {
 	private:
 		std::deque<int>	_toto;
-		std::list<int>	_tutu;
+		std::vector<int>	_tutu;
 
 	public:
 		PmergeMe();
@@ -21,6 +21,21 @@ class PmergeMe
 		int		checkList(char *list);
 		int		execFord(char **av);
 };
+
+template <typename T>
+void	displayList(T &seq);
+
+template <typename T>
+void	fillList(int nb, T &seq);
+
+template <typename T>
+void	sortPairs(T &tab);
+
+template <typename T>
+void	maxElem(T &tab);
+
+template <typename T>
+void	mergeSort(T &seq);
 
 #include "PmergeMe.tpp"
 
