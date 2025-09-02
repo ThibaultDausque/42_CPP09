@@ -28,7 +28,8 @@ void	sortPairs(T &tab)
 	{
 		if (i % 2 == 0)
 			flag = 1;
-		if (i == len - 1 && len % 2 != 0)
+		if ((i == len - 1 && len % 2 != 0)
+			|| (i == len - 1 && len % 2 == 0))
 			break ;
 		if (flag == 1)
 		{	
@@ -70,6 +71,8 @@ void	maxElem(T &tab)
 			max.push_back(*it);
 			flag = 0;
 		}
+		if (i == len - 1)
+			break ;
 		i++;
 	}
 	// mergeSort(tab);
