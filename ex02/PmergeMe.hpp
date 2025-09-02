@@ -7,23 +7,36 @@
 # include <cstdlib>
 # include <vector>
 
-std::deque<int>	_pair;
-std::list<int>	_list;
-
 class PmergeMe
 {
+	private:
+		std::deque<int>	_toto;
+		std::vector<int>	_tutu;
+
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe& cpy);
 		~PmergeMe();
 		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
-		void	displayList(void);
-		void	mergeSort(std::vector<int> &tab);
-		void	merge(std::vector<int> &right, std::vector<int> &left, std::vector<int> &tab);
-		void	fillList(int nb);
+		int		execFord(char **av);
 };
 
-# include "PmergeMe.tpp"
+template <typename T>
+void	displayList(T &seq);
+
+template <typename T>
+void	fillList(int nb, T &seq);
+
+template <typename T>
+void	sortPairs(T &tab);
+
+template <typename T>
+void	maxElem(T &tab);
+
+template <typename T>
+void	mergeSort(T &seq);
+
+#include "PmergeMe.tpp"
 
 #endif
