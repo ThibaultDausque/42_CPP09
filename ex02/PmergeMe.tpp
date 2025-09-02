@@ -75,7 +75,7 @@ void	maxElem(T &tab)
 			break ;
 		i++;
 	}
-	// mergeSort(tab);
+	mergeSort(max);
 	std::cout << std::endl;
 	std::cout << "max: ";
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
@@ -96,41 +96,42 @@ void	Pmerge(T &right, T &left, T &tab)
 	i = 0;
 	j = 0;
 	k = 0;
-	typename T::iterator	r = tab.begin();
-	typename T::iterator	l = tab.begin();
+	typename T::iterator	begin = tab.begin();
 	typename T::iterator	r_it = right.begin();
-	typename T::iterator	l_it = left.begin();	mergeSort(tab);
+	typename T::iterator	l_it = left.begin();
 	while (i < l_size && j < r_size)
 	{
 		if (*l_it < *r_it)
 		{
-
-			tab.insert(l, *l_it);
+			tab.insert(begin, *l_it);
 			i++;
 			l_it++;
 		}
 		else
 		{
-			tab.insert(r, *r_it);
+			tab.insert(begin, *r_it);
 			j++;
 			r_it++;
 		}
 	}
 	while (i < l_size)
 	{
-		tab.insert(l, *l_it);
+		tab.insert(begin, *l_it);
 		i++;
 		l_it++;
 	}
 	while (j < r_size)
 	{
-		tab.insert(r, *r_it);
+		tab.insert(begin, *r_it);
 		j++;
 		r_it++;
 	}
 	i = 0;
-	while (i++ < len)
+	while (i < len)
+	{
 		tab.pop_back();
+		i++;
+	}
 }
 
 template <typename T>
@@ -145,8 +146,7 @@ void    mergeSort(T &seq)
 	mid = size / 2;
 
 	T	right;
-	T	left;	mergeSort(right);
-	mergeSort(left);
+	T	left;
 
 	typename T::iterator it = seq.begin();
 	for (size_t i = 0; i < size; i++, it++)
@@ -160,7 +160,7 @@ void    mergeSort(T &seq)
 	mergeSort(right);
 	mergeSort(left);
 
-	// Pmerge(right, left, seq);
+	Pmerge(right, left, seq);
 }
 
 

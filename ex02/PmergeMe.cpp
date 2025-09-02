@@ -58,7 +58,7 @@ int	PmergeMe::execFord(char **av)
 	std::cout << std::endl;
 	sortPairs(_tutu);
 	std::cout << std::endl;
-	std::cout << "After (pair sort): ";
+	std::cout << "After (max tab): ";
 	for (std::vector<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
