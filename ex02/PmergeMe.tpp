@@ -14,6 +14,27 @@ void	fillList(int nb, T &seq)
 }
 
 template <typename T>
+void	rmMinNbers(T &tab, T &max)
+{
+	int		i;
+	int		size = tab.size();
+	(void) size;
+
+	i = 0;
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+	{
+		for (typename T::iterator mit = max.begin(); mit != max.end(); mit++)
+		{
+			if (*it == *mit)
+			{
+				tab.erase(it);
+				break ;
+			}
+		}
+	}
+}
+
+template <typename T>
 void	sortPairs(T &tab)
 {
 	T	pair;
@@ -43,6 +64,10 @@ void	sortPairs(T &tab)
 		}
 		i++;
 	}
+	std::cout << std::endl;
+	std::cout << "sort pairs: ";
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+		std::cout << *it << " ";
 	maxElem(tab);
 }
 
@@ -75,9 +100,18 @@ void	maxElem(T &tab)
 			break ;
 		i++;
 	}
-	mergeSort(max);
+	rmMinNbers(tab, max);
+	std::cout << std::endl;
+	std::cout << "min: ";
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << "max: ";
+	for (typename T::iterator it = max.begin(); it != max.end(); it++)
+		std::cout << *it << " ";
+	//mergeSort(max);
+	std::cout << std::endl;
+	std::cout << "After (max tab): ";
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
@@ -96,41 +130,43 @@ void	Pmerge(T &right, T &left, T &tab)
 	i = 0;
 	j = 0;
 	k = 0;
-	typename T::iterator	begin = tab.begin();
+	while (i < len)
+	{
+		tab.pop_back();
+		i++;
+	}
+	i = 0;
 	typename T::iterator	r_it = right.begin();
 	typename T::iterator	l_it = left.begin();
 	while (i < l_size && j < r_size)
 	{
 		if (*l_it < *r_it)
-		{
-			tab.insert(begin, *l_it);
+		{			tab.erase(tab.begin() + i);
+			tab.push_back(*l_it);
 			i++;
 			l_it++;
 		}
 		else
 		{
-			tab.insert(begin, *r_it);
+			tab.push_back(*r_it);
 			j++;
 			r_it++;
 		}
+		k++;
 	}
 	while (i < l_size)
 	{
-		tab.insert(begin, *l_it);
+		tab.push_back(*l_it);
 		i++;
 		l_it++;
+		k++;
 	}
 	while (j < r_size)
 	{
-		tab.insert(begin, *r_it);
+		tab.push_back(*r_it);
 		j++;
 		r_it++;
-	}
-	i = 0;
-	while (i < len)
-	{
-		tab.pop_back();
-		i++;
+		k++;
 	}
 }
 
