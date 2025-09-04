@@ -10,7 +10,7 @@ void	displayList(T &seq)
 template <typename T>
 void	fillList(int nb, T &seq)
 {
-    seq.push_back(nb);
+	seq.push_back(nb);
 }
 
 template <typename T>
@@ -34,9 +34,15 @@ void	rmMinNbers(T &tab, T &max)
 }
 
 template <typename T>
+void	jacobsthal(T &min, T &max)
+{
+	// J(n)=J(n−1)+2J(n−2)
+}
+
+template <typename T>
 void	sortPairs(T &tab)
 {
-	T	pair;
+	T		pair;
 	int		flag;
 	size_t	i;
 	int		tmp;
@@ -73,7 +79,7 @@ void	sortPairs(T &tab)
 template <typename T>
 void	maxElem(T &tab)
 {
-	T	max;
+	T		max;
 	size_t	i;
 	int		flag;
 	size_t	len;
@@ -108,10 +114,15 @@ void	maxElem(T &tab)
 	std::cout << "max: ";
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		std::cout << *it << " ";
-	//mergeSort(max);
+	mergeSort(max);
 	std::cout << std::endl;
 	std::cout << "After (max tab): ";
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
+		std::cout << *it << " ";
+	mergeSort(tab);
+	std::cout << std::endl;
+	std::cout << "After (min tab): ";
+	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 }
@@ -140,7 +151,7 @@ void	Pmerge(T &right, T &left, T &tab)
 	while (i < l_size && j < r_size)
 	{
 		if (*l_it < *r_it)
-		{			tab.erase(tab.begin() + i);
+		{
 			tab.push_back(*l_it);
 			i++;
 			l_it++;
@@ -161,8 +172,7 @@ void	Pmerge(T &right, T &left, T &tab)
 		k++;
 	}
 	while (j < r_size)
-	{	size_t	size = tab.size();
-	size_t	size2 = max.size();
+	{
 		tab.push_back(*r_it);
 		j++;
 		r_it++;
