@@ -16,21 +16,20 @@ void	fillList(int nb, T &seq)
 template <typename T>
 void	rmMinNbers(T &tab, T &max)
 {
-	int		i;
-	int		size = tab.size();
-	(void) size;
-
-	i = 0;
-	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
+	for (typename T::iterator it = tab.begin(); it != tab.end(); )
 	{
+		bool erased = false;
 		for (typename T::iterator mit = max.begin(); mit != max.end(); mit++)
 		{
 			if (*it == *mit)
 			{
 				tab.erase(it);
+				erased = true;
 				break ;
 			}
 		}
+		if (!erased)
+			it++;
 	}
 }
 
@@ -162,7 +161,8 @@ void	Pmerge(T &right, T &left, T &tab)
 		k++;
 	}
 	while (j < r_size)
-	{
+	{	size_t	size = tab.size();
+	size_t	size2 = max.size();
 		tab.push_back(*r_it);
 		j++;
 		r_it++;
@@ -198,6 +198,3 @@ void    mergeSort(T &seq)
 
 	Pmerge(right, left, seq);
 }
-
-
-
