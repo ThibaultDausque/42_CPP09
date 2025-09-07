@@ -6,6 +6,7 @@
 # include <deque>
 # include <cstdlib>
 # include <vector>
+# include <cmath>
 
 class PmergeMe
 {
