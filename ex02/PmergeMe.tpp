@@ -38,12 +38,33 @@ void	jacobsthal(T &min, T &max)
 {
 	int		jacobsthal;
 	int		len = min.size();
-	(void)	max;
+	int		k;
+	T		final;
 
+	for (typename T::iterator it = max.begin(); it != max.end(); it++)
+		final.push_back(*it);
 	for (int k = 1; k <= len; k++)
 	{
-		jacobsthal = round((pow(2, k + 1) + pow(-1, k))/3);
-		std::cout << jacobsthal << ", ";
+		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3);
+		if (jacobsthal < len)
+		{
+			final.insert(final.begin(), min[jacobsthal - 1]);
+			min.erase(min.begin() + jacobsthal - 1);
+		}
+	}
+	for (typename T::iterator it = min.begin(); it != min.end(); it++)
+	{
+		k = 1;
+		for (typename T::iterator fit = final.begin(); fit != final.begin(); fit++)
+		{
+			if (*it < *fit)
+				final.insert(final.begin() + k, *it);
+			k++;
+		}
+	}
+	for (typename T::iterator it = final.begin(); it != final.end(); it++)
+	{
+		std::cout << *it << " ";
 	}
 	std::cout << std::endl;
 	// J(n)=J(n−1)+2J(n−2)
@@ -129,11 +150,6 @@ void	maxElem(T &tab)
 	std::cout << "After (max tab): ";
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		std::cout << *it << " ";
-	mergeSort(tab);
-	std::cout << std::endl;
-	std::cout << "After (min tab): ";
-	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
-		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << "Jacobsthal insertion: " << std::endl;
 	jacobsthal(tab, max);
@@ -144,14 +160,12 @@ void	Pmerge(T &right, T &left, T &tab)
 {
 	size_t	i;
 	size_t	j;
-	size_t	k;
 	size_t	len = tab.size();
 	size_t	l_size = left.size();
 	size_t	r_size = right.size();
 
 	i = 0;
 	j = 0;
-	k = 0;
 	while (i < len)
 	{
 		tab.pop_back();
@@ -174,21 +188,18 @@ void	Pmerge(T &right, T &left, T &tab)
 			j++;
 			r_it++;
 		}
-		k++;
 	}
 	while (i < l_size)
 	{
 		tab.push_back(*l_it);
 		i++;
 		l_it++;
-		k++;
 	}
 	while (j < r_size)
 	{
 		tab.push_back(*r_it);
 		j++;
 		r_it++;
-		k++;
 	}
 }
 
