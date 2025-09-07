@@ -34,11 +34,10 @@ void	rmMinNbers(T &tab, T &max)
 }
 
 template <typename T>
-void	jacobsthal(T &min, T &max)
+void	jacob(T &min, T &max)
 {
 	int		jacobsthal;
 	int		len = min.size();
-	int		k;
 	T		final;
 
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
@@ -48,20 +47,19 @@ void	jacobsthal(T &min, T &max)
 		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3);
 		if (jacobsthal < len)
 		{
-			final.insert(final.begin(), min[jacobsthal - 1]);
+			typename T::iterator	it = min.begin() + jacobsthal - 1;
+			typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
+			final.insert(pos, min[jacobsthal - 1]);
 			min.erase(min.begin() + jacobsthal - 1);
 		}
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)
 	{
-		k = 1;
-		for (typename T::iterator fit = final.begin(); fit != final.begin(); fit++)
-		{
-			if (*it < *fit)
-				final.insert(final.begin() + k, *it);
-			k++;
-		}
+		typename T::iterator pos = std::lower_bound(final.begin(), final.end(), *it);
+		final.insert(pos, *it);
 	}
+	std::cout << std::endl;
+	std::cout << "After:   ";
 	for (typename T::iterator it = final.begin(); it != final.end(); it++)
 	{
 		std::cout << *it << " ";
@@ -100,10 +98,6 @@ void	sortPairs(T &tab)
 		}
 		i++;
 	}
-	std::cout << std::endl;
-	std::cout << "sort pairs: ";
-	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
-		std::cout << *it << " ";
 	maxElem(tab);
 }
 
@@ -137,22 +131,8 @@ void	maxElem(T &tab)
 		i++;
 	}
 	rmMinNbers(tab, max);
-	std::cout << std::endl;
-	std::cout << "min: ";
-	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
-		std::cout << *it << " ";
-	std::cout << std::endl;
-	std::cout << "max: ";
-	for (typename T::iterator it = max.begin(); it != max.end(); it++)
-		std::cout << *it << " ";
 	mergeSort(max);
-	std::cout << std::endl;
-	std::cout << "After (max tab): ";
-	for (typename T::iterator it = max.begin(); it != max.end(); it++)
-		std::cout << *it << " ";
-	std::cout << std::endl;
-	std::cout << "Jacobsthal insertion: " << std::endl;
-	jacobsthal(tab, max);
+	jacob(tab, max);
 }
 
 template <typename T>
