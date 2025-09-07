@@ -36,6 +36,16 @@ void	rmMinNbers(T &tab, T &max)
 template <typename T>
 void	jacobsthal(T &min, T &max)
 {
+	int		jacobsthal;
+	int		len = min.size();
+	(void)	max;
+
+	for (int k = 1; k <= len; k++)
+	{
+		jacobsthal = round((pow(2, k + 1) + pow(-1, k))/3);
+		std::cout << jacobsthal << ", ";
+	}
+	std::cout << std::endl;
 	// J(n)=J(n−1)+2J(n−2)
 }
 
@@ -125,6 +135,8 @@ void	maxElem(T &tab)
 	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
+	std::cout << "Jacobsthal insertion: " << std::endl;
+	jacobsthal(tab, max);
 }
 
 template <typename T>
