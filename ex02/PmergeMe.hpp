@@ -11,8 +11,8 @@
 class PmergeMe
 {
 	private:
-		std::deque<int>	_toto;
-		std::vector<int>	_tutu;
+		std::deque<int>		_seq1;
+		std::vector<int>	_seq2;
 
 	public:
 		PmergeMe();
@@ -20,7 +20,8 @@ class PmergeMe
 		~PmergeMe();
 		PmergeMe&	operator=(const PmergeMe& src);
 		int		checkList(char *list);
-		int		execFord(char **av);
+		int		execFord(char **av, int ac);
+		bool	sortedList(char **av, int ac);
 };
 
 template <typename T>

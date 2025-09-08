@@ -19,8 +19,8 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& src)
 {
 	if (this != &src)
 	{
-		_toto = src._toto;
-		_tutu = src._tutu;
+		_seq1 = src._seq1;
+		_seq2 = src._seq2;
 	}
 	return *this;
 }
@@ -36,11 +36,32 @@ int	PmergeMe::checkList(char *list)
 			return 0;
 		}
 	}
-	_tutu.push_back(atoi(list));
+	_seq1.push_back(atoi(list));
+	_seq2.push_back(atoi(list));
 	return 1;
 }
 
-int	PmergeMe::execFord(char **av)
+bool	PmergeMe::sortedList(char **av, int ac)
+{
+	int		i;
+	int		j;
+	int		nb1;
+	int		nb2;
+
+	i = 0;
+	j = 1;
+	for (; i < ac - 1; i++, j++)
+	{
+		nb1 = atoi(av[i]);
+		nb2 = atoi(av[j]);
+		if (nb1 > nb2)
+			return false;
+	}
+	std::cout << "This sequence of numbers are sorted" << std::endl;
+	return true;
+}
+
+int	PmergeMe::execFord(char **av, int ac)
 {
 	int		i;
 
@@ -51,20 +72,25 @@ int	PmergeMe::execFord(char **av)
 			return 0;
 		i++;
 	}
+	if (sortedList(av, ac))
+		return 0;
 
 	std::cout << "Before: ";
-	for (std::vector<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
+	for (std::vector<int>::iterator it = _seq2.begin(); it != _seq2.end(); ++it)
 		std::cout << *it << " ";
 	std::cout << std::endl;
-	sortPairs(_tutu);
-	// std::cout << std::endl;
-	// std::cout << "After (max tab): ";
-	// for (std::vector<int>::iterator it = _tutu.begin(); it != _tutu.end(); ++it)
-	// 	std::cout << *it << " ";
+	std::cout << std::endl;
+	sortPairs(_seq1);
+	sortPairs(_seq2);	
+	std::cout << "After: ";
+	for (std::vector<int>::iterator it = _seq2.begin(); it != _seq2.end(); it++)
+		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;
-	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
-	std::cout << "Time to process a range of " << i << " elements with std::<container>       :       " << "<time>" << std::endl;
+	// deque
+	std::cout << "Time to process a range of " << i - 1 << " elements with std::deque       :       " << "<time>" << std::endl;
+	// vector
+	std::cout << "Time to process a range of " << i - 1 << " elements with std::vector      :       " << "<time>" << std::endl;
 	std::cout << std::endl;
 	return 0;
 }

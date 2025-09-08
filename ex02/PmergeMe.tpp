@@ -58,14 +58,7 @@ void	jacob(T &min, T &max)
 		typename T::iterator pos = std::lower_bound(final.begin(), final.end(), *it);
 		final.insert(pos, *it);
 	}
-	std::cout << std::endl;
-	std::cout << "After:   ";
-	for (typename T::iterator it = final.begin(); it != final.end(); it++)
-	{
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
-	// J(n)=J(n−1)+2J(n−2)
+	min = final;
 }
 
 template <typename T>

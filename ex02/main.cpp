@@ -11,5 +11,5 @@ int	main(int ac, char **av)
 		std::cerr << "Error: you need to put some numbers." << std::endl;
 		return 0;
 	}
-	pm.execFord(av);
+	pm.execFord(av, ac);
 }
