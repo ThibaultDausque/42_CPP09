@@ -7,6 +7,7 @@
 # include <cstdlib>
 # include <vector>
 # include <cmath>
+# include <ctime>
 
 class PmergeMe
 {
@@ -22,6 +23,7 @@ class PmergeMe
 		int		checkList(char *list);
 		int		execFord(char **av, int ac);
 		bool	sortedList(char **av, int ac);
+		bool	duplicate(char **av, int ac);
 };
 
 template <typename T>

@@ -48,9 +48,9 @@ bool	PmergeMe::sortedList(char **av, int ac)
 	int		nb1;
 	int		nb2;
 
-	i = 0;
-	j = 1;
-	for (; i < ac - 1; i++, j++)
+	i = 1;
+	j = 2;
+	for (; i < ac && j < ac; i++, j++)
 	{
 		nb1 = atoi(av[i]);
 		nb2 = atoi(av[j]);
@@ -61,9 +61,35 @@ bool	PmergeMe::sortedList(char **av, int ac)
 	return true;
 }
 
+bool	PmergeMe::duplicate(char **av, int ac)
+{
+	int		nb1;
+	int		nb2;
+
+	for (int i = 1; i < ac; i++)
+	{
+		for (int j = 2; j < ac; j++)
+		{
+			nb1 = atoi(av[i]);
+			nb2 = atoi(av[j]);
+			if (i == j)
+				continue ;
+			else if (nb1 == nb2)
+			{
+				std::cout << "There are some duplicates numbers" << std::endl;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 int	PmergeMe::execFord(char **av, int ac)
 {
 	int		i;
+	clock_t	vectorTime;
+	clock_t	dequeTime;
+	clock_t	tmp;
 
 	i = 1;
 	while (av[i])
@@ -72,7 +98,9 @@ int	PmergeMe::execFord(char **av, int ac)
 			return 0;
 		i++;
 	}
-	if (sortedList(av, ac))
+	if (duplicate(av, ac))
+		return 0;
+	else if (sortedList(av, ac))
 		return 0;
 
 	std::cout << "Before: ";
@@ -80,17 +108,23 @@ int	PmergeMe::execFord(char **av, int ac)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;
+	dequeTime = clock();
 	sortPairs(_seq1);
-	sortPairs(_seq2);	
+	tmp = clock();
+	dequeTime = tmp - dequeTime;
+	vectorTime = clock();
+	sortPairs(_seq2);
+	tmp = clock();
+	vectorTime = tmp - vectorTime;
 	std::cout << "After: ";
 	for (std::vector<int>::iterator it = _seq2.begin(); it != _seq2.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;
-	// deque
-	std::cout << "Time to process a range of " << i - 1 << " elements with std::deque       :       " << "<time>" << std::endl;
-	// vector
-	std::cout << "Time to process a range of " << i - 1 << " elements with std::vector      :       " << "<time>" << std::endl;
+	double	msVector = static_cast<double>(vectorTime) / CLOCKS_PER_SEC * 1000;
+	double	msDeque = static_cast<double>(dequeTime) / CLOCKS_PER_SEC * 1000;
+	std::cout << "Time to process a range of " << i - 1 << " elements with std::deque       :       " << msDeque << "ms" << std::endl;
+	std::cout << "Time to process a range of " << i - 1 << " elements with std::vector      :       " << msVector << "ms" << std::endl;
 	std::cout << std::endl;
 	return 0;
 }
