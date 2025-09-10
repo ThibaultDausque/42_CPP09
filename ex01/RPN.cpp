@@ -83,35 +83,41 @@ void	RPN::calcool(std::string& av)
 	}
 	if (parseCmd(av))
 	{
+		std::list<int>::iterator	last_it;
+		std::list<int>::iterator	prev_it;
 		for (size_t i = 0; i < av.size(); i++)
 		{
 			if (av[i] >= '0' && av[i] <= '9')
 				_nb.push_back(atoi(&av[i]));
+			last_it = _nb.end();
+			last_it--;
+			prev_it = last_it;
+			prev_it--;
 			if (_nb.size() >= 2)
 			{	
 				if (av[i] == '+')
 				{
-					_nb[_nb.size() - 2] += _nb[_nb.size() - 1];
+					*prev_it += *last_it;
 					_nb.pop_back();
 				}
 				else if (av[i] == '-')
 				{
-					_nb[_nb.size() - 2] -= _nb[_nb.size() - 1];
+					*prev_it -= *last_it;
 					_nb.pop_back();
 				}
 				else if (av[i] == '*')
 				{
-					_nb[_nb.size() - 2] *= _nb[_nb.size() - 1];
+					*prev_it *= *last_it;
 					_nb.pop_back();
 				}
 				else if (av[i] == '/')
 				{
-					_nb[_nb.size() - 2] /= _nb[_nb.size() - 1];
+					*prev_it /= *last_it;
 					_nb.pop_back();
 				}
 			}
 		}
-		std::cout << "Result: " << _nb.at(0) << std::endl;
+		std::cout << "Result: " << *prev_it << std::endl;
 	}
 	return ;
 }

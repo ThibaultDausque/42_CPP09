@@ -2,13 +2,13 @@
 # define RPN_HPP
 
 # include <iostream>
-# include <vector>
+# include <list>
 # include <cstdlib>
 
 class	RPN
 {
 	private:
-		std::vector<int>	_nb;
+		std::list<int>	_nb;
 
 	public:
 		RPN();
