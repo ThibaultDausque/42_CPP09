@@ -10,8 +10,6 @@ int	main(int ac, char **av)
 	}
 	std::string	file(av[1]);
 	BitcoinExchange	bc;
-	// bc.dateForm(date);
-	bc.parseData();
 	bc.parseInput(file);
 	return 0;
 }

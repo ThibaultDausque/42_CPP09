@@ -29,5 +29,6 @@
 # define DAY "Error: day KO."
 # define VALUE "Error: value must be beetwen 0 & 1000."
 # define CSV "Error: .csv file is bad."
+# define VALID "Error: this date doesn't exist."
 
 #endif

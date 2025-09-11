@@ -23,13 +23,35 @@ BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& src)
 	return *this;
 }
 
+static bool leapYear(int year)
+{
+	return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
+
+static bool	validDate(std::string day, std::string month, std::string year)
+{
+	int		is_year = 0;
+	int		is_month = 0;
+	int		is_day = 0;
+
+	is_year = atoi(year.c_str());
+	is_month = atoi(month.c_str());
+	is_day = atoi(day.c_str());
+	if (!is_month || is_month > 12 || !is_day || is_day > 31 || (is_month == 2 && is_day > 29))
+		return (false);
+	else if (is_month != 1 && is_month != 3 && is_month != 5 && is_month != 7 && is_month != 8 && is_month != 10 && is_month != 12 && is_day == 31)
+		return (false);
+	else if (is_month == 2 && is_day == 29 && !leapYear(is_year))
+		return (false);
+	return (true);
+}
+
 int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 {
 	int		len;
 	std::string	year;
 	std::string	month;
 	std::string	day;
-	(void) data;
 
 	for (size_t t = 0; date[t] && date[t] != ' '; t++)
 		len = t;
@@ -38,25 +60,30 @@ int	BitcoinExchange::dateForm(std::string& date, t_data& data)
 		std::cout << RED << DATE << std::endl;
 		return 0;
 	}
-	year = date.substr(0, 3);
-	if (atoi(year.c_str()) < 1 || atoi(year.c_str()) > 9999)
+	year = date.substr(0, 4);
+	if (atoi(year.c_str()) <= 0 || atoi(year.c_str()) > 9999)
 	{
 		std::cout << RED << YEAR << std::endl;
 		return 0;
 	}
-	month = date.substr(5, 6);
+	month = date.substr(5, 2);
 	if (atoi(month.c_str()) < 1 || atoi(month.c_str()) > 12)
 	{
 		std::cout << RED << MONTH << std::endl;
 		return 0;
 	}
-	day = date.substr(8, 9);
+	day = date.substr(8, 2);
 	if (atoi(day.c_str()) < 1 || atoi(day.c_str()) > 31)
 	{
-		std::cout << RED << MONTH << std::endl;
+		std::cout << RED << DAY << std::endl;
 		return 0;
 	}
 	data.time = date.substr(0, 10);
+	if (!validDate(day, month, year))
+	{
+		std::cout << RED << VALID << std::endl;
+		return 0;
+	}
 	return len;
 }
 
@@ -86,7 +113,7 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 		}
 		if (isdigit(line[++pos_bis]))
 		{
-			value = line.substr(pos_bis, line.size());
+			value = line.substr(pos_bis, line.size() - pos_bis);
 			for (size_t i = 0; i < value.size(); i++)
 			{
 				if (value[i] == '.')
@@ -129,6 +156,7 @@ void	BitcoinExchange::parseInput(std::string& file)
 		std::cerr << RED << OPEN << std::endl;
 		return ;
 	}
+	parseData();
 	idx = 0;
 	while (std::getline(input, line))
 	{
@@ -151,9 +179,11 @@ void	BitcoinExchange::parseInput(std::string& file)
 			{
 				_btc[data.time] = inputFileForm(line, data);
 				value = _csv[data.time] * _btc[data.time];
-				std::cout << "csv value: " << _csv[data.time] << std::endl;
-				std::cout << WHITE << data.time << " => " << _btc[data.time] << " = "
-					<< value << std::endl;
+				std::cout << "value = [ " << value << " ]" << std::endl;
+				std::cout << "_csv = [ " << _csv[data.time] << " ]" << std::endl;
+				std::cout << "_btc = [ " << _btc[data.time] << " ]" << std::endl;
+				std::cout << WHITE << data.time << " => "
+					<< _btc[data.time] << " = " << value << std::endl;
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;
@@ -186,7 +216,7 @@ void	BitcoinExchange::parseData()
 			continue ;
 		}
 		date = line.substr(0, 10);
-		value = line.substr(11, line.size());
+		value = line.substr(11, line.size() - 11);
 		_csv[date] = atof(value.c_str());
 		idx++;
 	}
