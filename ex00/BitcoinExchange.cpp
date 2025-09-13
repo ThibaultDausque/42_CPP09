@@ -60,6 +60,13 @@ void	BitcoinExchange::nearDate(const std::string txt_year)
 			i++;
 			continue ;
 		}
+		else if (i == 1)
+		{
+			year = line.substr(0, 10);
+			delta = fabs(difftime(toTimestamp(txt_year), toTimestamp(year)));
+			min = delta;
+			continue ;
+		}
 		year = line.substr(0, 10);
 		delta = fabs(difftime(toTimestamp(txt_year), toTimestamp(year)));
 		if (delta < min)
@@ -69,10 +76,7 @@ void	BitcoinExchange::nearDate(const std::string txt_year)
 		}
 		i++;
 	}
-	if (atoi(txt_year.substr(0, 4).c_str()) < 2009)
-		value = 0;
-	else
-		value = _csv[year] * _btc[txt_year];
+	value = _csv[year] * _btc[txt_year];
 	std::cout << _csv[year] << " * " << _btc[txt_year] << std::endl;
 	std::cout << WHITE << txt_year << " => "
 			<< _btc[txt_year] << " = " << value << std::endl;
@@ -185,6 +189,8 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 				return 0;
 			}
 			data.value = atof(value.c_str());
+			if (data.value == 0)
+				return -1;
 		}
 		else
 		{
@@ -194,47 +200,53 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 	}
 	return data.value;
 }
-
-std::string&	compare(std::string& date)
+void	BitcoinExchange::compare(std::string& date)
 {
-	while (std::getline(check_data, data_line))
+	std::ifstream	check_data("data.csv");
+	std::string		line;
+	float			value;
+	float			i;
+
+	if (!check_data.is_open())
+	{
+		std::cerr << RED << OPEN << std::endl;
+		return ;
+	}
+	i = 0;
+	while (std::getline(check_data, line))
 	{
 		if (i == 0)
 		{
 			i++;
 			continue ;
 		}
-		if (data_line.substr(0, 10) == data.time)
+		if (line.substr(0, 10) == date)
 		{
-			value = _csv[data.time] * _btc[data.time];
-			std::cout << WHITE << data.time << " => "
-				<< _btc[data.time] << " = " << value << std::endl;
-			flag = 1;
+			value = _csv[date] * _btc[date];
+			std::cout << WHITE << date << " => "
+				<< _btc[date] << " = " << value << std::endl;
 			break ;
 		}
 		i++;
 	}
+	check_data.close();
+	return ;
 }
 
 void	BitcoinExchange::parseInput(std::string& file)
 {
 	std::ifstream	input(file.c_str());
-	std::ifstream	check_data("data.csv");
 	std::string		line;
-	std::string		data_line;
 	int				idx;
 	t_data			data;
-	float			value;
-	int				flag;
 
-	if (!input.is_open() || !check_data.is_open())
+	if (!input.is_open())
 	{
 		std::cerr << RED << OPEN << std::endl;
 		return ;
 	}
 	parseData();
 	idx = 0;
-	flag = 0;
 	while (std::getline(input, line))
 	{
 		if (idx == 0 && line != "date | value")
@@ -252,13 +264,18 @@ void	BitcoinExchange::parseInput(std::string& file)
 				std::cout << ">> " << line << std::endl;
 				continue ;
 			}
-			if (inputFileForm(line, data))
+			float	input = inputFileForm(line, data);
+			if (input > 0)
 			{
-				_btc[data.time] = inputFileForm(line, data);
-				// if (flag == 0)
-				// 	nearDate(data.time);
-				// else
-				// 	flag = 0;
+				_btc[data.time] = input;
+				compare(data.time);
+				if (input >= 1 && input <= 1000)
+					nearDate(line.substr(0, 10));
+			}
+			else if (input == -1)
+			{
+				_btc[data.time] = 0;
+				compare(data.time);
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;
@@ -266,7 +283,6 @@ void	BitcoinExchange::parseInput(std::string& file)
 		idx++;
 	}
 	input.close();
-	check_data.close();
 	return ;
 }
 
@@ -286,7 +302,6 @@ void	BitcoinExchange::parseData()
 	idx = 0;
 	while (std::getline(data, line))
 	{
-		std::cout << line << std::endl;
 		if (idx == 0)
 		{
 			idx++;

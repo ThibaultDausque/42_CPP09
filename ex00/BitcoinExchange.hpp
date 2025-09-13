@@ -33,6 +33,7 @@ class BitcoinExchange
 		bool	dateIsValid(std::string& date);
 		bool	leapYear();
 		void	nearDate(const std::string date);
+		void	compare(std::string& date);
 };
 
 #endif
