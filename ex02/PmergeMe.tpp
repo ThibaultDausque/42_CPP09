@@ -47,10 +47,13 @@ void	jacob(T &min, T &max)
 		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3);
 		if (jacobsthal < len)
 		{
-			typename T::iterator	it = min.begin() + jacobsthal - 1;
-			typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
-			final.insert(pos, min[jacobsthal - 1]);
-			min.erase(min.begin() + jacobsthal - 1);
+			if (jacobsthal > 0 && jacobsthal <= len)
+			{
+				typename T::iterator	it = min.begin() + (jacobsthal - 1);
+				typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
+				final.insert(pos, min[jacobsthal - 1]);
+				min.erase(min.begin() + jacobsthal - 1);
+			}
 		}
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)

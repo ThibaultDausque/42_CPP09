@@ -7,6 +7,7 @@
 # include <fstream>
 # include <ctime>
 # include <cctype>
+# include <cmath>
 # include "message.hpp"
 
 class BitcoinExchange
@@ -31,6 +32,7 @@ class BitcoinExchange
 		void	parseData();
 		bool	dateIsValid(std::string& date);
 		bool	leapYear();
+		void	nearDate(const std::string date);
 };
 
 #endif
