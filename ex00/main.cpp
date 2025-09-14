@@ -3,12 +3,12 @@
 
 int	main(int ac, char **av)
 {
-	if (ac != 2)
+	std::string	file(av[1]);
+	if (ac != 2 || file != "input.txt")
 	{
 		std::cout << "Error: could not open file." << std::endl;
 		return 0;
 	}
-	std::string	file(av[1]);
 	BitcoinExchange	bc;
 	bc.parseInput(file);
 	return 0;

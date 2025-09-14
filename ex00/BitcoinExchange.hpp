@@ -29,7 +29,7 @@ class BitcoinExchange
 		void	parseInput(std::string& file);
 		float	inputFileForm(std::string& line, t_data &data);
 		int		dateForm(std::string& date, t_data& data);
-		void	parseData();
+		int		parseData();
 		bool	dateIsValid(std::string& date);
 		bool	leapYear();
 		void	nearDate(const std::string date);
