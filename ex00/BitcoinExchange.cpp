@@ -19,7 +19,10 @@ BitcoinExchange::~BitcoinExchange()
 BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange& src)
 {
 	if (this != &src)
+	{
 		this->_btc = src._btc;
+		this->_csv = src._csv;
+	}
 	return *this;
 }
 
@@ -150,11 +153,11 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 
 	pos = dateForm(line, data);
 	if (!pos)
-		return 0;
+		return -1;
 	if (line[pos + 1] != ' ' || line[pos + 2] != '|' || line[pos + 1] == '\0')
 	{
 		std::cerr << RED << FORMAT << std::endl;
-		return 0;
+		return -1;
 	}
 	pos_bis = pos + 2;
 	count = 0;
@@ -163,7 +166,7 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 		if (line[++pos_bis] != ' ')
 		{
 			std::cerr << RED << DATEVALUE << std::endl;
-			return 0;
+			return -1;
 		}
 		if (isdigit(line[++pos_bis]))
 		{
@@ -178,57 +181,23 @@ float	BitcoinExchange::inputFileForm(std::string& line, t_data &data)
 				if (value[i] < '0' || value[i] > '9' || count > 1)
 				{
 					std::cout << RED << VALUE << std::endl;
-					return 0;
+					return -1;
 				}
 			}
 			if (atof(value.c_str()) < 0 || atof(value.c_str()) > 1000)
 			{
 				std::cout << RED << VALUE << std::endl;
-				return 0;
+				return -1;
 			}
 			data.value = atof(value.c_str());
-			if (data.value == 0)
-				return -1;
 		}
 		else
 		{
 			std::cerr << RED << VALUE << std::endl;
-			return 0;
+			return -1;
 		}
 	}
 	return data.value;
-}
-void	BitcoinExchange::compare(std::string& date)
-{
-	std::ifstream	check_data("data.csv");
-	std::string		line;
-	float			value;
-	float			i;
-
-	if (!check_data.is_open())
-	{
-		std::cerr << RED << OPEN << std::endl;
-		return ;
-	}
-	i = 0;
-	while (std::getline(check_data, line))
-	{
-		if (i == 0)
-		{
-			i++;
-			continue ;
-		}
-		if (line.substr(0, 10) == date)
-		{
-			value = _csv[date] * _btc[date];
-			std::cout << WHITE << date << " => "
-				<< _btc[date] << " = " << value << std::endl;
-			break ;
-		}
-		i++;
-	}
-	check_data.close();
-	return ;
 }
 
 void	BitcoinExchange::parseInput(std::string& file)
@@ -264,17 +233,11 @@ void	BitcoinExchange::parseInput(std::string& file)
 				continue ;
 			}
 			float	input = inputFileForm(line, data);
-			if (input > 0)
+			if (input >= 0)
 			{
 				_btc[data.time] = input;
-				compare(data.time);
-				if (input >= 1 && input <= 1000)
+				if (input >= 0 && input <= 1000)
 					nearDate(line.substr(0, 10));
-			}
-			else if (input == -1)
-			{
-				_btc[data.time] = 0;
-				compare(data.time);
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;
