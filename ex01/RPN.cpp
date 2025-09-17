@@ -112,6 +112,11 @@ void	RPN::calcool(std::string& av)
 				}
 				else if (av[i] == '/')
 				{
+					if (*last_it == 0)
+					{
+						std::cerr << "Error: division by 0." << std::endl;
+						return ;
+					}
 					*prev_it /= *last_it;
 					_nb.pop_back();
 				}
