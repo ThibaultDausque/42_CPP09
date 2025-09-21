@@ -38,6 +38,7 @@ void	jacob(T &min, T &max)
 {
 	int		jacobsthal;
 	int		len = min.size();
+	int		middle = max.size() / 2;
 	T		final;
 
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
@@ -50,16 +51,34 @@ void	jacob(T &min, T &max)
 			if (jacobsthal > 0 && jacobsthal <= len)
 			{
 				typename T::iterator	it = min.begin() + (jacobsthal - 1);
-				typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
-				final.insert(pos, min[jacobsthal - 1]);
+				typename T::iterator	max_it = max.begin() + middle;
+				if (*it > *max_it)
+				{
+					typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
+					final.insert(pos, min[jacobsthal - 1]);
+				}
+				else
+				{
+					typename T::iterator	pos = std::lower_bound(final.begin(), final.begin() + middle, *it);
+					final.insert(pos, min[jacobsthal - 1]);
+				}
 				min.erase(min.begin() + jacobsthal - 1);
 			}
 		}
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)
 	{
-		typename T::iterator pos = std::lower_bound(final.begin(), final.end(), *it);
-		final.insert(pos, *it);
+		typename T::iterator	max_it = max.begin() + middle;
+		if (*it > *max_it)
+		{
+			typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
+			final.insert(pos, *it);
+		}
+		else
+		{
+			typename T::iterator	pos = std::lower_bound(final.begin(), final.begin() + middle, *it);
+			final.insert(pos, *it);
+		}
 	}
 	min = final;
 }
