@@ -45,7 +45,7 @@ static time_t toTimestamp(const std::string &date)
 	return (mktime(&tm));
 }
 
-void	BitcoinExchange::nearDate(const std::string txt_year)
+void	BitcoinExchange::nearDate(const std::string start)
 {
 	std::ifstream	data("data.csv");
 	std::string		line;
@@ -59,25 +59,21 @@ void	BitcoinExchange::nearDate(const std::string txt_year)
 	i = 0;
 	while (std::getline(data, line))
 	{
-		year = line.substr(0, 10);
+		end = line.substr(0, 10);
 		if (i == 0)
 		{
 			i++;
 			continue ;
 		}
-		else if (i == 1)
-		{
-			delta = fabs(difftime(toTimestamp(year), toTimestamp(txt_year)));
-			min = delta;
-		}
-		delta = fabs(difftime(toTimestamp(year), toTimestamp(txt_year)));
-		if (delta < min)
+		delta = difftime(toTimestamp(end), toTimestamp(start));
+		if (delta < min && delta > 0)
 		{
 			min = delta;
 			delta_year = year;
 		}
 		i++;
 	}
+	std::cout << "[ DELTA ]" << " " << delta << std::endl;
 	value = _csv[delta_year] * _btc[txt_year];
 	std::cout << WHITE << txt_year << " => "
 			<< _btc[txt_year] << " = " << value << std::endl;
