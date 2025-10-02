@@ -26,11 +26,6 @@ bool	RPN::parseCmd(std::string&	av)
 {
 	for (size_t i = 0; i < av.size(); i++)
 	{
-		if (av[0] == ' ' || (i % 2 != 0 && av[i] != ' '))
-		{
-			std::cerr << "Error: Bad argument." << std::endl;
-			return false;
-		}
 		if (i % 2 == 0)
 		{
 			if ((av[i] < '0' || av[i] > '9') && av[i] != '+' && av[i] != '-'
@@ -44,7 +39,7 @@ bool	RPN::parseCmd(std::string&	av)
 	return true;
 }
 
-int	RPN::countOps(std::string& av)
+bool	RPN::countOps(std::string& av)
 {
 	int		signs;
 	int		nb;
@@ -60,22 +55,12 @@ int	RPN::countOps(std::string& av)
 			signs++;
 	}
 	if (nb != signs + 1)
-		return 0;
-	return 1;
+		return false;
+	return true;
 }
 
 void	RPN::calcool(std::string& av)
 {
-	if ((av[0] < '0' || av[0] > '9'))
-	{
-		std::cerr << "Error: first element must be a number" << std::endl;
-		return ;
-	}
-	if (av[2] == '-' || av[2] == '+' || av[2] == '*' || av[2] == '/')
-	{
-		std::cerr << "Error: bad RPN format." << std::endl;
-		return ;
-	}
 	if (!countOps(av))
 	{
 		std::cerr << "Error: RPN rule not respected. (n = o + 1)" << std::endl;
@@ -87,6 +72,10 @@ void	RPN::calcool(std::string& av)
 		std::list<int>::iterator	prev_it;
 		for (size_t i = 0; i < av.size(); i++)
 		{
+			while (av[i] == ' ' && av[i])
+				i++;
+			if (av[i] == '\0')
+				break ;
 			if (av[i] >= '0' && av[i] <= '9')
 				_nb.push_back(atoi(&av[i]));
 			last_it = _nb.end();

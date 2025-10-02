@@ -16,7 +16,7 @@ class	RPN
 		~RPN();
 		RPN&	operator=(const RPN& src);
 		bool	parseCmd(std::string& av);
-		int		countOps(std::string& av);
+		bool	countOps(std::string& av);
 		void	calcool(std::string& av);
 };
 
