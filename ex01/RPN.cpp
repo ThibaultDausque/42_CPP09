@@ -26,11 +26,6 @@ bool	RPN::parseCmd(std::string&	av)
 {
 	for (size_t i = 0; i < av.size(); i++)
 	{
-		if (av[0] == ' ' || (i % 2 != 0 && av[i] != ' '))
-		{
-			std::cerr << "Error: Bad argument." << std::endl;
-			return false;
-		}
 		if (i % 2 == 0)
 		{
 			if ((av[i] < '0' || av[i] > '9') && av[i] != '+' && av[i] != '-'
@@ -44,7 +39,7 @@ bool	RPN::parseCmd(std::string&	av)
 	return true;
 }
 
-int	RPN::countOps(std::string& av)
+bool	RPN::countOps(std::string& av)
 {
 	int		signs;
 	int		nb;
@@ -60,8 +55,8 @@ int	RPN::countOps(std::string& av)
 			signs++;
 	}
 	if (nb != signs + 1)
-		return 0;
-	return 1;
+		return false;
+	return true;
 }
 
 void	RPN::calcool(std::string& av)

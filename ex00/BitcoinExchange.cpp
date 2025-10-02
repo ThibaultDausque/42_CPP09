@@ -31,53 +31,29 @@ static bool leapYear(int year)
 	return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 }
 
-static time_t toTimestamp(const std::string &date)
+// static time_t toTimestamp(const std::string &date)
+// {
+// 	struct tm tm;
+//
+// 	tm.tm_year = atoi(date.substr(0, 4).c_str()) - 1900;
+// 	tm.tm_mon = atoi(date.substr(5, 2).c_str()) - 1;
+// 	tm.tm_mday = atoi(date.substr(8, 2).c_str());
+// 	tm.tm_hour = 0;
+// 	tm.tm_min = 0;
+// 	tm.tm_sec = 0;
+// 	tm.tm_isdst = false;
+// 	return (mktime(&tm));
+// }
+
+void	BitcoinExchange::nearDate(const std::string btc_date)
 {
-	struct tm tm;
-
-	tm.tm_year = atoi(date.substr(0, 4).c_str()) - 1900;
-	tm.tm_mon = atoi(date.substr(5, 2).c_str()) - 1;
-	tm.tm_mday = atoi(date.substr(8, 2).c_str());
-	tm.tm_hour = 0;
-	tm.tm_min = 0;
-	tm.tm_sec = 0;
-	tm.tm_isdst = false;
-	return (mktime(&tm));
-}
-
-void	BitcoinExchange::nearDate(const std::string start)
-{
-	std::ifstream	data("data.csv");
-	std::string		line;
-	std::string		year;
-	std::string		delta_year;
-	double			delta;
-	double			min;
-	float			value;
-	int				i;
-
-	i = 0;
-	while (std::getline(data, line))
-	{
-		end = line.substr(0, 10);
-		if (i == 0)
-		{
-			i++;
-			continue ;
-		}
-		delta = difftime(toTimestamp(end), toTimestamp(start));
-		if (delta < min && delta > 0)
-		{
-			min = delta;
-			delta_year = year;
-		}
-		i++;
-	}
-	std::cout << "[ DELTA ]" << " " << delta << std::endl;
-	value = _csv[delta_year] * _btc[txt_year];
-	std::cout << WHITE << txt_year << " => "
-			<< _btc[txt_year] << " = " << value << std::endl;
-	data.close();
+	double	value;
+	std::map<std::string, float>::iterator	it = _csv.lower_bound(btc_date);
+    if (it == _csv.end() || btc_date < it->first)
+       --it;
+	value = _csv[it->first] * _btc[btc_date];
+	std::cout << WHITE << btc_date << " => "
+			<< _btc[btc_date] << " = " << value << std::endl;
 	return ;
 }
 
