@@ -45,13 +45,37 @@ static bool leapYear(int year)
 // 	return (mktime(&tm));
 // }
 
+bool	dateLess(const std::string& a, const std::string& b)
+{
+	int		a_year = atoi(a.substr(0, 4).c_str());
+	int		a_mon = atoi(a.substr(5, 2).c_str());
+	int		a_day = atoi(a.substr(8, 2).c_str());
+	int		b_year = atoi(b.substr(0, 4).c_str());
+	int		b_mon = atoi(b.substr(5, 2).c_str());
+	int		b_day = atoi(b.substr(8, 2).c_str());
+
+	if (a_year != b_year)
+		return (a_year < b_year);
+	if (a_mon != b_mon)
+		return (a_mon < b_mon);
+	return (a_day < b_day);
+}
+
 void	BitcoinExchange::nearDate(const std::string btc_date)
 {
-	double	value;
+	float	value;
 	std::map<std::string, float>::iterator	it = _csv.lower_bound(btc_date);
-    if (it == _csv.end() || btc_date < it->first)
+
+	if (it == _csv.begin() && dateLess(btc_date, it->first))
+	{
+		value = 0;
+		std::cout << WHITE << btc_date << " => "
+			<< _btc[btc_date] << " = " << value << std::endl;
+		return ;
+	}    
+	if (it == _csv.end() || dateLess(btc_date, it->first))
        --it;
-	value = _csv[it->first] * _btc[btc_date];
+	value = it->second * _btc[btc_date];
 	std::cout << WHITE << btc_date << " => "
 			<< _btc[btc_date] << " = " << value << std::endl;
 	return ;
@@ -209,7 +233,10 @@ void	BitcoinExchange::parseInput(std::string& file)
 			{
 				_btc[data.time] = input;
 				if (input >= 0 && input <= 1000)
-					nearDate(line.substr(0, 10));
+				{
+					std::string	date = line.substr(0, 10);
+					nearDate(date);
+				}
 			}
 			else
 				std::cout << "KO >> " << line << std::endl;

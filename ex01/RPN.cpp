@@ -26,14 +26,11 @@ bool	RPN::parseCmd(std::string&	av)
 {
 	for (size_t i = 0; i < av.size(); i++)
 	{
-		if (i % 2 == 0)
+		if ((av[i] < '0' || av[i] > '9') && av[i] != '+' && av[i] != '-'
+			&& av[i] != '*' && av[i] != '/' && av[i] != ' ')
 		{
-			if ((av[i] < '0' || av[i] > '9') && av[i] != '+' && av[i] != '-'
-				&& av[i] != '*' && av[i] != '/')
-			{
-				std::cerr << "Error: Bad calcool." << std::endl;
-				return false;
-			}
+			std::cerr << "Error: Bad calcool." << std::endl;
+			return false;
 		}
 	}
 	return true;
