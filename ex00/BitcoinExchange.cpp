@@ -31,20 +31,6 @@ static bool leapYear(int year)
 	return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
 }
 
-// static time_t toTimestamp(const std::string &date)
-// {
-// 	struct tm tm;
-//
-// 	tm.tm_year = atoi(date.substr(0, 4).c_str()) - 1900;
-// 	tm.tm_mon = atoi(date.substr(5, 2).c_str()) - 1;
-// 	tm.tm_mday = atoi(date.substr(8, 2).c_str());
-// 	tm.tm_hour = 0;
-// 	tm.tm_min = 0;
-// 	tm.tm_sec = 0;
-// 	tm.tm_isdst = false;
-// 	return (mktime(&tm));
-// }
-
 bool	dateLess(const std::string& a, const std::string& b)
 {
 	int		a_year = atoi(a.substr(0, 4).c_str());
