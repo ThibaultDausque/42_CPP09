@@ -56,10 +56,14 @@ bool	RPN::countOps(std::string& av)
 		if (av[i] == '-' || av[i] == '+'
 			|| av[i] == '*' || av[i] == '/')
 			signs++;
+		if (nb == 1 && signs == 1)
+			return false;
 	}
+	if (signs != nb - 1)
+		return false;
 	if (nb == 1 || signs == 0)
 		return false;
-	if (nb == signs)
+	if (nb <= signs)
 		return false;
 	return true;
 }

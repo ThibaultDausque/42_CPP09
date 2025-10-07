@@ -50,7 +50,7 @@ bool	PmergeMe::sortedList(char **av, int ac)
 
 	i = 1;
 	j = 2;
-	for (; i < ac && j < ac; i++, j++)
+	for (; i < ac - 1 && j < ac; i++, j++)
 	{
 		nb1 = atoi(av[i]);
 		nb2 = atoi(av[j]);
@@ -66,7 +66,7 @@ bool	PmergeMe::duplicate(char **av, int ac)
 	int		nb1;
 	int		nb2;
 
-	for (int i = 1; i < ac; i++)
+	for (int i = 1; i < ac - 1; i++)
 	{
 		for (int j = 2; j < ac; j++)
 		{
