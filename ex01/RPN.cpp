@@ -57,6 +57,8 @@ bool	RPN::countOps(std::string& av)
 			|| av[i] == '*' || av[i] == '/')
 			signs++;
 	}
+	if (nb == 1 || signs == 0)
+		return false;
 	if (nb == signs)
 		return false;
 	return true;
