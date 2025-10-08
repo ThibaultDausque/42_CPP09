@@ -84,22 +84,6 @@ bool	PmergeMe::duplicate(char **av, int ac)
 	return false;
 }
 
-static int	isItSorted(std::vector<int> tab)
-{
-	for (std::vector<int>::iterator it = tab.begin(); it != tab.end() - 1; it++)
-	{
-		for (std::vector<int>::iterator mit = tab.begin() + 1; mit != tab.end(); mit++)
-		{
-			if (*mit < *it)
-			{
-				std::cout << "/KO\\" << std::endl;
-			       return 0;	
-			}
-		}
-	}
-	return 1;
-}
-
 int	PmergeMe::execFord(char **av, int ac)
 {
 	int		i;
@@ -135,7 +119,6 @@ int	PmergeMe::execFord(char **av, int ac)
 	std::cout << "After: ";
 	for (std::vector<int>::iterator it = _seq2.begin(); it != _seq2.end(); it++)
 		std::cout << *it << " ";
-	isItSorted(_seq2);
 	std::cout << std::endl;
 	std::cout << std::endl;
 	double	msVector = static_cast<double>(vectorTime) / CLOCKS_PER_SEC * 1000;

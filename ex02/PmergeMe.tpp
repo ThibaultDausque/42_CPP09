@@ -4,7 +4,8 @@ template <typename T>
 void	displayList(T &seq)
 {
     for (typename T::iterator it = seq.begin(); it != seq.end(); it++)
-        std::cout << *it;
+        std::cout << *it << " ";
+	std::cout << std::endl;
 }
 
 template <typename T>
@@ -13,6 +14,20 @@ void	fillList(int nb, T &seq)
 	seq.push_back(nb);
 }
 
+template <typename T>
+bool	isItSorted(T &tab)
+{
+	bool sorted = true;
+	for (size_t i = 0; i < tab.size() - 1; i++)
+	{
+    	if (tab[i] > tab[i + 1])
+		{
+        	sorted = false;
+        	break;
+    	}
+	}
+	return sorted;
+}
 template <typename T>
 void	rmMinNbers(T &tab, T &max)
 {
@@ -43,7 +58,7 @@ void	jacob(T &min, T &max)
 
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		final.push_back(*it);
-	for (int k = 1; k <= len; k++)
+	for (int k = 1; k < len; k++)
 	{
 		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3) - 1;
 		if (jacobsthal < len)
@@ -68,19 +83,12 @@ void	jacob(T &min, T &max)
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)
 	{
-		typename T::iterator	max_it = max.begin() + middle;
-		if (*it > *max_it)
-		{
-			typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
-			final.insert(pos, *it);
-		}
-		else
-		{
-			typename T::iterator	pos = std::lower_bound(final.begin(), final.begin() + middle, *it);
-			final.insert(pos, *it);
-		}
+		typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
+		final.insert(pos, *it);
 	}
 	min = final;
+	if (!isItSorted(min))
+		std::cout << "Error: Ford-Johnson sort failed." << std::endl;
 }
 
 template <typename T>
@@ -147,8 +155,6 @@ void	maxElem(T &tab)
 	}
 	rmMinNbers(tab, max);
 	mergeSort(max);
-	std::cout << "MAX: ";
-	displayList(max);
 	jacob(tab, max);
 }
 
