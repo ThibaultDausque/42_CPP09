@@ -255,7 +255,8 @@ int	BitcoinExchange::parseData()
 			continue ;
 		}
 		date = line.substr(0, 10);
-		value = line.substr(11, line.size() - 11);
+		if (date != "\0")
+			value = line.substr(11, line.size() - 11);
 		_csv[date] = atof(value.c_str());
 		idx++;
 	}

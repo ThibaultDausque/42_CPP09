@@ -4,7 +4,7 @@ template <typename T>
 void	displayList(T &seq)
 {
     for (typename T::iterator it = seq.begin(); it != seq.end(); it++)
-        std::cout << *it << std::endl;
+        std::cout << *it;
 }
 
 template <typename T>
@@ -37,32 +37,32 @@ template <typename T>
 void	jacob(T &min, T &max)
 {
 	int		jacobsthal;
-	int		len = min.size();
-	int		middle = max.size() / 2;
+	int		len = min.size() - 1;
+	int		middle = (max.size() / 2) - 1;
 	T		final;
 
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		final.push_back(*it);
 	for (int k = 1; k <= len; k++)
 	{
-		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3);
+		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3) - 1;
 		if (jacobsthal < len)
 		{
 			if (jacobsthal > 0 && jacobsthal <= len)
 			{
-				typename T::iterator	it = min.begin() + (jacobsthal - 1);
-				typename T::iterator	max_it = max.begin() + middle;
+				typename T::iterator	it = min.begin() + jacobsthal;
+				typename T::iterator	max_it = max.begin() + middle - 1;
 				if (*it > *max_it)
 				{
 					typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
-					final.insert(pos, min[jacobsthal - 1]);
+					final.insert(pos, min[jacobsthal]);
 				}
 				else
 				{
 					typename T::iterator	pos = std::lower_bound(final.begin(), final.begin() + middle, *it);
-					final.insert(pos, min[jacobsthal - 1]);
+					final.insert(pos, min[jacobsthal]);
 				}
-				min.erase(min.begin() + jacobsthal - 1);
+				min.erase(min.begin() + jacobsthal);
 			}
 		}
 	}
@@ -147,6 +147,8 @@ void	maxElem(T &tab)
 	}
 	rmMinNbers(tab, max);
 	mergeSort(max);
+	std::cout << "MAX: ";
+	displayList(max);
 	jacob(tab, max);
 }
 
