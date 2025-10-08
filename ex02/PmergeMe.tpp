@@ -83,8 +83,8 @@ void	jacob(T &min, T &max)
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)
 	{
-		typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
-		final.insert(pos, *it);
+		typename T::iterator	mit = std::lower_bound(final.begin(), final.end(), *it);
+		final.insert(mit, *it);
 	}
 	min = final;
 	if (!isItSorted(min))
