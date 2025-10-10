@@ -1,4 +1,6 @@
 #include "PmergeMe.hpp"
+#include <sstream>
+#include <vector>
 
 PmergeMe::PmergeMe()
 {
@@ -28,16 +30,27 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& src)
 int	PmergeMe::checkList(char *list)
 {
 	std::string	av(list);
+	int			nb;
+	std::istringstream	iss(av);
+
 	for (size_t i = 0; i < av.size(); i++)
 	{
 		if (av[i] < '0' || av[i] > '9')
 		{
-			std::cout << "Error: list of number KO." << std::endl;
+			std::cerr << "Error: list of number KO." << std::endl;
 			return 0;
 		}
 	}
-	_seq1.push_back(atoi(list));
-	_seq2.push_back(atoi(list));
+	if (iss >> nb)
+	{
+		_seq1.push_back(nb);
+		_seq2.push_back(nb);
+	}
+	else
+	{
+		std::cerr << "Error: bad number." << std::endl;
+		return 0;
+	}
 	return 1;
 }
 
@@ -61,28 +74,28 @@ bool	PmergeMe::sortedList(char **av, int ac)
 	return true;
 }
 
-bool	PmergeMe::duplicate(char **av, int ac)
-{
-	int		nb1;
-	int		nb2;
-
-	for (int i = 1; i < ac - 1; i++)
-	{
-		for (int j = 2; j < ac; j++)
-		{
-			nb1 = atoi(av[i]);
-			nb2 = atoi(av[j]);
-			if (i == j)
-				continue ;
-			else if (nb1 == nb2)
-			{
-				std::cout << "There are some duplicates numbers" << std::endl;
-				return true;
-			}
-		}
-	}
-	return false;
-}
+// bool	PmergeMe::duplicate(char **av, int ac)
+// {
+// 	int		nb1;
+// 	int		nb2;
+//
+// 	for (int i = 1; i < ac - 1; i++)
+// 	{
+// 		for (int j = 2; j < ac; j++)
+// 		{
+// 			nb1 = atoi(av[i]);
+// 			nb2 = atoi(av[j]);
+// 			if (i == j)
+// 				continue ;
+// 			else if (nb1 == nb2)
+// 			{
+// 				std::cout << "There are some duplicates numbers" << std::endl;
+// 				return true;
+// 			}
+// 		}
+// 	}
+// 	return false;
+// }
 
 int	PmergeMe::execFord(char **av, int ac)
 {
@@ -90,6 +103,8 @@ int	PmergeMe::execFord(char **av, int ac)
 	clock_t	vectorTime;
 	clock_t	dequeTime;
 	clock_t	tmp;
+	std::deque<int>		result1;
+	std::vector<int>	result2;
 
 	i = 1;
 	while (av[i])
@@ -98,9 +113,7 @@ int	PmergeMe::execFord(char **av, int ac)
 			return 0;
 		i++;
 	}
-	if (duplicate(av, ac))
-		return 0;
-	else if (sortedList(av, ac))
+	if (sortedList(av, ac))
 		return 0;
 
 	std::cout << "Before: ";
@@ -109,15 +122,15 @@ int	PmergeMe::execFord(char **av, int ac)
 	std::cout << std::endl;
 	std::cout << std::endl;
 	dequeTime = clock();
-	sortPairs(_seq1);
+	result1 = sortPairs(_seq1);
 	tmp = clock();
 	dequeTime = tmp - dequeTime;
 	vectorTime = clock();
-	sortPairs(_seq2);
+	result2 = sortPairs(_seq2);
 	tmp = clock();
 	vectorTime = tmp - vectorTime;
 	std::cout << "After: ";
-	for (std::vector<int>::iterator it = _seq2.begin(); it != _seq2.end(); it++)
+	for (std::vector<int>::iterator it = result2.begin(); it != result2.end(); it++)
 		std::cout << *it << " ";
 	std::cout << std::endl;
 	std::cout << std::endl;

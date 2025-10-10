@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include "message.hpp"
+#include <string>
 
 BitcoinExchange::BitcoinExchange()
 {
@@ -51,7 +52,9 @@ void	BitcoinExchange::nearDate(const std::string btc_date)
 {
 	float	value;
 	std::map<std::string, float>::iterator	it = _csv.lower_bound(btc_date);
-
+	
+	if (_csv.empty())
+		return ;
 	if (it == _csv.begin() && dateLess(btc_date, it->first))
 	{
 		value = 0;
@@ -239,26 +242,33 @@ int	BitcoinExchange::parseData()
 	std::string		line;
 	std::string		date;
 	std::string		value;
-	int				idx;
 
 	if (!data.is_open())
 	{
 		std::cerr << RED << OPEN << std::endl;
 		return 0;
 	}
-	idx = 0;
+	std::getline(data, line);
+	if (line != "date,exchange_rate")
+	{
+		std::cerr << RED << "Error: date,exchange_rate" << std::endl;
+		data.close();
+		return 0;
+	}
 	while (std::getline(data, line))
 	{
-		if (idx == 0)
+		try
 		{
-			idx++;
-			continue ;
-		}
-		date = line.substr(0, 10);
-		if (date != "\0")
+			date = line.substr(0, 10);
 			value = line.substr(11, line.size() - 11);
-		_csv[date] = atof(value.c_str());
-		idx++;
+			_csv[date] = atof(value.c_str());
+		}
+		catch (std::out_of_range &e)
+		{
+			std::cerr << RED << "Error: data.csv bad format." << std::endl;
+			data.close();
+			return 0;
+		}
 	}
 	data.close();
 	return 1;

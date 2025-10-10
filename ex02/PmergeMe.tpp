@@ -1,12 +1,5 @@
 #include "PmergeMe.hpp"
-
-template <typename T>
-void	displayList(T &seq)
-{
-    for (typename T::iterator it = seq.begin(); it != seq.end(); it++)
-        std::cout << *it << " ";
-	std::cout << std::endl;
-}
+#include <algorithm>
 
 template <typename T>
 void	fillList(int nb, T &seq)
@@ -22,63 +15,41 @@ bool	isItSorted(T &tab)
 	{
     	if (tab[i] > tab[i + 1])
 		{
+			std::cerr << tab[i] << " < " << tab[i + 1] << std::endl;
         	sorted = false;
         	break;
     	}
 	}
 	return sorted;
 }
-template <typename T>
-void	rmMinNbers(T &tab, T &max)
-{
-	for (typename T::iterator it = tab.begin(); it != tab.end(); )
-	{
-		bool erased = false;
-		for (typename T::iterator mit = max.begin(); mit != max.end(); mit++)
-		{
-			if (*it == *mit)
-			{
-				tab.erase(it);
-				erased = true;
-				break ;
-			}
-		}
-		if (!erased)
-			it++;
-	}
-}
 
 template <typename T>
-void	jacob(T &min, T &max)
+T	jacob(T &min, T &max)
 {
 	int		jacobsthal;
+	int		middle = (max.size() - 1) / 2;
 	int		len = min.size() - 1;
-	int		middle = (max.size() / 2) - 1;
 	T		final;
 
 	for (typename T::iterator it = max.begin(); it != max.end(); it++)
 		final.push_back(*it);
-	for (int k = 1; k < len; k++)
+	for (int k = 1; k <= len; k++)
 	{
-		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3) - 1;
-		if (jacobsthal < len)
+		jacobsthal = round((pow(2, k + 1) + pow(-1, k)) / 3);
+		if (jacobsthal > 0 && jacobsthal < len)
 		{
-			if (jacobsthal > 0 && jacobsthal <= len)
+			typename T::iterator	it = min.begin() + jacobsthal;
+			typename T::iterator	max_it = max.begin() + middle;
+			if (*it > *max_it)
 			{
-				typename T::iterator	it = min.begin() + jacobsthal;
-				typename T::iterator	max_it = max.begin() + middle - 1;
-				if (*it > *max_it)
-				{
-					typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
-					final.insert(pos, min[jacobsthal]);
-				}
-				else
-				{
-					typename T::iterator	pos = std::lower_bound(final.begin(), final.begin() + middle, *it);
-					final.insert(pos, min[jacobsthal]);
-				}
-				min.erase(min.begin() + jacobsthal);
+				typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
+				final.insert(pos, *it);
+				min.erase(it);
+				continue ;
 			}
+			typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
+			final.insert(pos, *it);
+			min.erase(it);
 		}
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)
@@ -86,19 +57,20 @@ void	jacob(T &min, T &max)
 		typename T::iterator	mit = std::lower_bound(final.begin(), final.end(), *it);
 		final.insert(mit, *it);
 	}
-	min = final;
-	if (!isItSorted(min))
+	if (!isItSorted(final))
 		std::cout << "Error: Ford-Johnson sort failed." << std::endl;
+	return final;
 }
 
 template <typename T>
-void	sortPairs(T &tab)
+T	sortPairs(T &tab)
 {
 	T		pair;
 	int		flag;
 	size_t	i;
 	int		tmp;
 	size_t	len;
+	T		result;		
 
 	len = tab.size();
 	i = 0;
@@ -121,41 +93,43 @@ void	sortPairs(T &tab)
 		}
 		i++;
 	}
-	maxElem(tab);
+	result = maxElem(tab);
+	return result;
 }
 
 template <typename T>
-void	maxElem(T &tab)
+T	maxElem(T &tab)
 {
 	T		max;
 	size_t	i;
 	int		flag;
 	size_t	len;
-
+	T		result;
 	len = tab.size();
 	i = 0;
 	flag = 0;
 	for (typename T::iterator it = tab.begin(); it != tab.end(); it++)
 	{
-		if (i % 2 != 0)
-			flag = 1;
-		if (i == len - 1 && len % 2 != 0)
-		{
+		if (it == tab.end())
 			max.push_back(*it);
-			break ;
-		}
-		if (flag == 1)
+	  	else if (i % 2 == 0)
 		{
-			max.push_back(*it);
-			flag = 0;
+			i++;
+			continue ;
 		}
-		if (i == len - 1)
-			break ;
+	  	else
+			max.push_back(*it);
 		i++;
 	}
-	rmMinNbers(tab, max);
+	for (typename T::iterator it = max.begin(); it != max.end(); it++)
+	{
+		typename T::iterator	mit = std::find(tab.begin(), tab.end(), *it);
+		if (it != max.end())
+			tab.erase(mit);
+	}
 	mergeSort(max);
-	jacob(tab, max);
+	result = jacob(tab, max);
+	return result;
 }
 
 template <typename T>
@@ -163,18 +137,12 @@ void	Pmerge(T &right, T &left, T &tab)
 {
 	size_t	i;
 	size_t	j;
-	size_t	len = tab.size();
 	size_t	l_size = left.size();
 	size_t	r_size = right.size();
 
 	i = 0;
 	j = 0;
-	while (i < len)
-	{
-		tab.pop_back();
-		i++;
-	}
-	i = 0;
+	tab.clear();
 	typename T::iterator	r_it = right.begin();
 	typename T::iterator	l_it = left.begin();
 	while (i < l_size && j < r_size)

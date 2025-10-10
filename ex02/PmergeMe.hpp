@@ -1,6 +1,7 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
+# include <sstream>
 # include <iostream>
 # include <list>
 # include <deque>
@@ -33,10 +34,10 @@ template <typename T>
 void	fillList(int nb, T &seq);
 
 template <typename T>
-void	sortPairs(T &tab);
+T	sortPairs(T &tab);
 
 template <typename T>
-void	maxElem(T &tab);
+T	maxElem(T &tab);
 
 template <typename T>
 void	mergeSort(T &seq);
