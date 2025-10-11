@@ -33,7 +33,7 @@ bool	RPN::parseCmd(std::string&	av)
 			std::cerr << "Error: Bad calcool toto." << std::endl;
 			return false;
 		}
-		if (av[i] >= '0' && av[i] <= '9' && av[i + 1] >= '0' && av[i + 1] <= '9')
+	  	else if (av[i] >= '0' && av[i] <= '9' && av[i + 1] >= '0' && av[i + 1] <= '9')
 		{
 			std::cerr << "Error: Bad calcool." << std::endl;
 			return false;
@@ -52,10 +52,14 @@ bool	RPN::countOps(std::string& av)
 	for (size_t i = 0; i < av.size(); i++)
 	{
 		if (av[i] >= '0' && av[i] <= '9')
+		{
+			if (av[i + 1] != ' ' && av[i + 1] != '\0')
+				return false;
 			nb++;
+		}
 		if (av[i] == '-' || av[i] == '+' || av[i] == '*' || av[i] == '/')
 		{
-			if (av[i + 1] != ' ')
+			if (av[i + 1] != ' ' && av[i + 1] != '\0')
 				return false;
 			signs++;
 		}

@@ -251,7 +251,7 @@ int	BitcoinExchange::parseData()
 	std::getline(data, line);
 	if (line != "date,exchange_rate")
 	{
-		std::cerr << RED << "Error: date,exchange_rate" << std::endl;
+		std::cerr << RED << "Error: date,exchange_rate in data.csv" << std::endl;
 		data.close();
 		return 0;
 	}
