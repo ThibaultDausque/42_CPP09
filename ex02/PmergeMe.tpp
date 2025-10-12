@@ -44,12 +44,10 @@ T	jacob(T &min, T &max)
 			{
 				typename T::iterator	pos = std::lower_bound(final.begin() + middle, final.end(), *it);
 				final.insert(pos, *it);
-				min.erase(it);
 				continue ;
 			}
 			typename T::iterator	pos = std::lower_bound(final.begin(), final.end(), *it);
 			final.insert(pos, *it);
-			min.erase(it);
 		}
 	}
 	for (typename T::iterator it = min.begin(); it != min.end(); it++)

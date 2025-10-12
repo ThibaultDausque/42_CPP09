@@ -74,29 +74,6 @@ bool	PmergeMe::sortedList(char **av, int ac)
 	return true;
 }
 
-// bool	PmergeMe::duplicate(char **av, int ac)
-// {
-// 	int		nb1;
-// 	int		nb2;
-//
-// 	for (int i = 1; i < ac - 1; i++)
-// 	{
-// 		for (int j = 2; j < ac; j++)
-// 		{
-// 			nb1 = atoi(av[i]);
-// 			nb2 = atoi(av[j]);
-// 			if (i == j)
-// 				continue ;
-// 			else if (nb1 == nb2)
-// 			{
-// 				std::cout << "There are some duplicates numbers" << std::endl;
-// 				return true;
-// 			}
-// 		}
-// 	}
-// 	return false;
-// }
-
 int	PmergeMe::execFord(char **av, int ac)
 {
 	int		i;
